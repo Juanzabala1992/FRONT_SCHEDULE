@@ -1,0 +1,25 @@
+#card-login{
+    border-radius: 40px;
+}
+.history:hover{
+    cursor: pointer;
+}
+.subtitles{
+    font-weight: bold;
+    font-size: 15px;
+}
+h1{
+    font-weight: bold;
+}
+.observation{
+    width: 90%;
+}
+.date{
+    width: 50%;
+}
+.points{
+    margin: 0 5px 10px 5px;
+}
+mat-row{
+    margin-top: 10px;
+}

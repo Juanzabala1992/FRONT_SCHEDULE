@@ -1,0 +1,19 @@
+.image_container{
+    width: 12%;
+}
+.logo_image{
+    width: 100%;
+}
+.navbar-nav{
+    width: 10%; 
+}
+.nav-item{
+    width: 100%;
+}
+.logo{
+    width: 50%;
+}
+.icon{
+    height: 40px;
+    width: 30px;
+}

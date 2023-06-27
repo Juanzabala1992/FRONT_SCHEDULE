@@ -1,0 +1,202 @@
+<div class="container-fluid d-flex justify-content-center" *ngIf="data_user">
+  <form class="form" role="form" [formGroup]="fg">
+    <div class="container d-flex justify-content-center align-items-center  row">
+      <div class="col-12 d-flex justify-content-center mt-4">
+          <h1>Dashboard</h1>
+      </div>
+      <div class="col-12">
+          <div class="row">
+              <div class="col-2">
+                <span class="subtitles">Nombre:</span>
+              </div>
+              <div class="col-4">
+                  <span>{{data_user.nombre}} {{data_user.apellido}}</span>
+              </div> 
+            <div class="col-2 history">
+              <img (click)="history()"  src="../../../assets/icons/clock-history.svg" alt="">
+            </div>                            
+          </div>
+          <div class="row">
+              <div class="col-2">
+                <span class="subtitles">Identificación:</span>
+              </div>
+              <div class="col-1">
+                <span>{{data_user.tipo_de_documento}}</span>
+              </div>
+              <div class="col-8">
+                <span>{{data_user.numero_de_documento}}</span>
+              </div>              
+          </div>        
+      </div>
+      <div class="col-12 d-flex justify-content-end mt-3">
+          <div class="col-6 d-flex justify-content-end">
+              <span class="me-1 subtitles">Fecha inicio: </span> 
+                <mat-form-field class="date" appearance="fill">
+                    <mat-label>Fecha inicial</mat-label>
+                    <input matInput [matDatepicker]="picker" id="date" formControlName="initial_date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                    <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
+                </mat-form-field>         
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            <span class="me-1 subtitles">Fecha fin: </span>
+                <mat-form-field  class="date" appearance="fill">
+                    <mat-label>Fecha final</mat-label>
+                    <input matInput [matDatepicker]="picker2" id="date" formControlName="final_date" >
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker2></mat-datepicker>
+                    <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
+                </mat-form-field>
+          </div>
+      </div>
+      <div class="card col-12 mt-5" id="card-login">
+          <div class="card-body" id="card-login-body">         
+            <mat-table [dataSource]="dataSourcePacks">
+              <ng-container formArrayName="promos"> 
+                <ng-container matColumnDef="activities">
+                  <mat-header-cell *matHeaderCellDef class="d-flex justify-content-center"> 
+                  <h3 class="subtitles">Resumen actividades</h3>
+                </mat-header-cell>
+                  <mat-cell *matCellDef="let element;" [formGroup]="element">
+                    <mat-form-field>
+                      <input matInput placeholder="Actividad" formControlName="activities" required>
+                    </mat-form-field>
+                  </mat-cell>
+                </ng-container>         
+             
+                <ng-container matColumnDef="hours">
+                  <mat-header-cell *matHeaderCellDef class="d-flex justify-content-center"> 
+                    <h3 class="subtitles">Horas invertidas</h3></mat-header-cell>
+                            <!-- -->  
+                    <mat-cell *matCellDef="let element;" [formGroup]="element">            
+                      <mat-form-field appearance="outline">
+                        <mat-label>hh</mat-label>
+                        <select matNativeControl formControlName="hours">
+                          <option selected></option>
+                          <option value="{{hour}}" *ngFor="let hour of hours">{{hour | twoDigit}}</option>       
+                        </select>
+                      </mat-form-field>
+                     
+                      <div class="points">
+                        <span class="subtitles">:</span>
+                      </div>                     
+                      <mat-form-field appearance="outline">
+                        <mat-label>mm</mat-label>
+                        <select matNativeControl formControlName="minutes">
+                          <option value="" selected></option>
+                          <option value="{{minute}}" *ngFor="let minute of minutes">{{minute | twoDigit}}</option>       
+                        </select>
+                      </mat-form-field>
+                    </mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="act_initial_date">
+                  <mat-header-cell *matHeaderCellDef class="d-flex justify-content-center"> 
+                    <h3 class="subtitles">Fecha inicial</h3></mat-header-cell>
+                  <mat-cell *matCellDef="let element;" [formGroup]="element">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker" placeholder="Fecha inicial" formControlName="act_initial_date">
+                      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="act_final_date">
+                  <mat-header-cell *matHeaderCellDef class="d-flex justify-content-center"> 
+                    <h3 class="subtitles">Fecha final</h3></mat-header-cell>
+                  <mat-cell *matCellDef="let element;" [formGroup]="element">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker" placeholder="Fecha final"formControlName="act_final_date" required>
+                      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </mat-cell>
+                </ng-container> 
+
+                  <!-- Delete Column -->
+                <ng-container matColumnDef="eliminar">
+                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell *matCellDef="let element; index as i" [formGroup]="element">
+                    <button mat-fab color="primary" (click)="deleteLesson(i)" aria-label="Example icon button with a delete icon">
+                      <mat-icon>delete</mat-icon>
+                    </button>          
+                  </mat-cell>
+                </ng-container>                
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </ng-container>
+            </mat-table>
+            <div class="row">
+              <div class="col-12">
+                <span class="subtitles text-center ">Total horas</span>
+              </div>
+              <div class="col-12 d-flex justify-content-center mt-5">                
+                <span class="subtitles">{{total_horas}}</span>                
+              </div>      
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <span class="subtitles text-center ">Observaciones</span>
+              </div>
+              <div class="col-12 d-flex justify-content-center mt-5">
+                <mat-form-field class="observation mt-2">
+                  <mat-label>Observaciones</mat-label>
+                  <textarea matInput placeholder="Observaciones" formControlName="observations"></textarea>
+                </mat-form-field>
+              </div>      
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-3">
+                    <span class="subtitles text-center ">Cliente:</span>
+                  </div>
+                  <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Cliente</mat-label>
+                      <input matInput placeholder="Cliente" value="Sushi" formControlName="client">
+                    </mat-form-field>
+                  </div>
+                </div>                
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">
+                    <span class="subtitles text-center ">Responsable:</span>
+                  </div>
+                  <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Responsable</mat-label>
+                      <input matInput placeholder="Cliente" formControlName="final_client">
+                    </mat-form-field>
+                  </div>
+                </div>                
+              </div>
+            </div>
+            <div class="row button mt-3 g-0">
+              <div class="col-2">
+                <button mat-mini-fab (click)="addLesson()" color="primary" aria-label="Example icon button with a plus one icon">
+                  <mat-icon>plus_one</mat-icon>
+                </button>
+              </div>  
+              <!--<div class="col-2">
+                <button mat-mini-fab class="button_footer" (click)="base()" color="primary" aria-label="Example icon button with a plus one icon">
+                  <img src="../../../assets/icons/file-bar-graph-white.svg" style="width: 20px;">
+                </button>
+              </div>-->  
+              <div class="col-2">
+                <button mat-mini-fab (click)="save()" color="primary" aria-label="Example icon button with a plus one icon">
+                  <img src="../../../assets/icons/icons8-save-80.png" style="width: 20px;">
+                </button>
+              </div>         
+            </div> 
+          </div>
+         <div>       
+       </div>
+      </div>
+    </div> 
+  </form>
+</div>
