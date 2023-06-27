@@ -4,7 +4,7 @@
             Dashboard Informes
         </h2>
     </div>
-    <div class="sub-container mt-5">
+    <div class="sub-container mt-5 mb-3">
         <div class="card">
             <div class="card-body">
                 <div class="table">
@@ -40,7 +40,11 @@
                         </ng-container>
 
                         <ng-container matColumnDef="activities">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Actividades</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+                                <div style="width: 100%;" class="d-flex justify-content-center text-center">
+                                    <span>Actividades</span>
+                                </div>
+                            </th>
                             <td mat-cell *matCellDef="let row" [ngSwitch]="row.type">
                                 <div>
                                     <table>
@@ -102,8 +106,10 @@
                 <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
             </div>
         </div> 
-        <button mat-mini-fab class="button_footer" (click)="exportExcel()" color="primary" aria-label="Example icon button with a plus one icon">
-            <img src="../../../assets/icons/file-bar-graph-white.svg" style="width: 20px;">
-          </button>       
+        <div class="row d-flex justify-content-center mt-3 mb-5">
+            <button mat-mini-fab class="button_footer" (click)="exportExcel()" color="primary" aria-label="Example icon button with a plus one icon">
+                <img src="../../../assets/icons/file-bar-graph-white.svg" style="width: 20px;">
+            </button> 
+        </div>           
     </div>
 </div>

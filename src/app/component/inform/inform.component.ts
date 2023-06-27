@@ -48,7 +48,44 @@ export class InformComponent implements OnInit {
     });
   }
   exportExcel(): void {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
+ 
+    const tableData: any[] = [];
+    const headers: string[] = [
+      'Nombre',
+      'Fecha inicio',
+      'Fecha fin',
+      'Numero de documento',
+      'Actividades',
+      'Observaciones del desarrollador',
+      'Responsable cliente',
+      'Total horas'
+    ];
+  
+    this.data.forEach((row: any) => {
+      const activitiesData: string[] = [];
+  
+      if (Array.isArray(row.actividades)) {
+        row.actividades.forEach((activity: any) => {
+          const activityData: string = `${activity.id}, ${activity.data}, ${activity.hours}, ${activity.initial_date}, ${activity.final_date}`;
+          activitiesData.push(activityData);
+        });
+      }
+  
+      const rowData: any[] = [
+        row.nombre,
+        row.fecha_inicio,
+        row.fecha_fin,
+        row.numero_de_documento,
+        activitiesData.join('\n'),
+        row.observaciones,
+        row.responsable_cliente,
+        row.total_horas
+      ];
+  
+      tableData.push(rowData);
+    });
+  
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([headers, ...tableData]);
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
