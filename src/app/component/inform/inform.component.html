@@ -89,8 +89,7 @@
                 
                         <ng-container matColumnDef="totalhoras">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Total horas</th>
-                            <td mat-cell *matCellDef="let row" [ngSwitch]="row.type">
-                                
+                            <td mat-cell *matCellDef="let row" [ngSwitch]="row.type">                                
                                 <p *ngSwitchDefault>{{row.total_horas}}</p>
                             </td>
                         </ng-container>

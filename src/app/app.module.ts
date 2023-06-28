@@ -24,6 +24,10 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ConsoleComponent } from './component/console/console.component';
 import { InformComponent } from './component/inform/inform.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { FormsModule } from '@angular/forms';
+import { FollowComponent } from './component/follow/follow.component';
+import { InformAdminComponent } from './component/inform-admin/inform-admin.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HistoryComponent,
     TwoDigitPipe,
     ConsoleComponent,
-    InformComponent
+    InformComponent,
+    FollowComponent,
+    InformAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +60,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatAutocompleteModule,
     MatPaginatorModule,
+    FormsModule,
+    AngularMultiSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

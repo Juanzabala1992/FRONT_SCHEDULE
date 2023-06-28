@@ -6,6 +6,8 @@ import { RegisterComponent } from "./component/register/register.component";
 import { HistoryComponent } from "./component/history/history.component";
 import { ConsoleComponent } from "./component/console/console.component";
 import { InformComponent } from "./component/inform/inform.component";
+import { FollowComponent } from "./component/follow/follow.component";
+import { InformAdminComponent } from "./component/inform-admin/inform-admin.component";
 
 const routes: Routes = [
     { 
@@ -29,8 +31,16 @@ const routes: Routes = [
       component:ConsoleComponent
     },
     {
-      path:'inform',
+      path:'inform-admin',
+      component:InformAdminComponent
+    },
+    {
+      path:'inform/activities',
       component:InformComponent
+    },
+    {
+      path:'inform/follow',
+      component:FollowComponent
     },
  
   ];  

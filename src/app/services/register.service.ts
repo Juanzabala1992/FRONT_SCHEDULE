@@ -18,6 +18,14 @@ export class RegisterService {
       }));
   }
 
+  getAllUsers() {    
+    const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
+    return this.http.get(`${environment.apiUrl}/profile/all`, { headers: { Authorization: `Bearer ${token}` } })
+      .pipe(map((data: any) => {            
+        return data;
+      }));
+  }
+
   userRegister(activityData:any) {
     const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
     return this.http.post(`${environment.apiUrl}/save`,

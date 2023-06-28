@@ -1,28 +1,29 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { first } from 'rxjs';
-import { DashboardService } from 'src/app/services/dashboard.service';
+import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
+import { FollowService } from 'src/app/services/follow.service';
+import { RegisterService } from 'src/app/services/register.service';
+import { first } from 'rxjs';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
-  selector: 'app-inform',
-  templateUrl: './inform.component.html',
-  styleUrls: ['./inform.component.css']
+  selector: 'app-follow',
+  templateUrl: './follow.component.html',
+  styleUrls: ['./follow.component.css']
 })
-export class InformComponent implements OnInit {
 
+export class FollowComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   data:any;
-  displayedColumns: string[] = ['nombres','fechainicio','fechafin', 'numerodocumento','activities','observaciones','responsablecliente', 'totalhoras'];
+  displayedColumns: string[] = ['recurso','cliente','clientefinal', 'contratocliente','contratoclientefinal',
+  'fechacontrato','seguimiento', 'puntodeatencion', 'responsable'];
   error:any;
-  displayedColumnsActi: string[] = ['id','data','hours', 'initial_date','final_date'];
-  dataSourcesActivities =new MatTableDataSource<any>();
+  dataSourcesActivities=new MatTableDataSource<any>();
   dropdownList:any = [];
   selectedItems:any = [];
   dropdownSettings:any = {};
@@ -34,21 +35,52 @@ export class InformComponent implements OnInit {
     }
   }
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;  
-  constructor(private dashboardService:DashboardService, private _liveAnnouncer: LiveAnnouncer,){}
+
+    
+  constructor(private router:Router, private followService:FollowService, 
+    private registerService:RegisterService, private sharedService:SharedService){
+    this.dropdownList = [
+      {"id":1,"itemName":"Incidencia", "image":"../../../assets/icons/alert-icon.png"},
+      {"id":2,"itemName":"Advertencia", "image":"../../../assets/icons/green_alert.png"},
+      {"id":3,"itemName":"Resuelto", "image":"../../../assets/icons/yellow-alert.png"} 
+    ];
+
+  this.dropdownSettings = { 
+          singleSelection: true, 
+          text:"opcion",
+          selectAllText:'Select All',
+          unSelectAllText:'UnSelect All',
+          enableSearchFilter: true,
+          classes:"myclass custom-class"
+    };  
+  }
 
   ngOnInit():void{
-    this.dashboardService.getAll()
+    this.registerService.getAllUsers()
     .pipe(first())
     .subscribe({
-        next: (data:any) => { 
-          this.data=data;          
-          this.dataSource = new MatTableDataSource(data);
-            this.dataSource.paginator = this.paginator;              
+        next: (data) => {             
+            console.log("data ---> ", data)
         },
-        error: (error:any) => {
+        error: error => {
             this.error = error;            
         }
     });
+  }
+
+  onItemSelect(item:any){
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item:any){
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any){
+    console.log(items);
+  }
+  onDeSelectAll(items: any){
+    console.log(items);
   }
 
   exportExcel(): void {
@@ -95,16 +127,4 @@ export class InformComponent implements OnInit {
     const data: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(data, 'tabla.xlsx');
   }
-  
-
-  announceSortChange(sortState: Sort) {
-    // Avisa el cambio en el ordenamiento
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
-  }
 }
-
-
