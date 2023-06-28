@@ -44,4 +44,12 @@ export class FollowService {
       }));
   }
 
+  getFollowClientAll() {
+    const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
+    return this.http.get(`${environment.apiUrl}/follow/client/all`, { headers: { Authorization: `Bearer ${token}` } })
+      .pipe(map((data: any) => {        
+        return data;
+      }));
+  }
+
 }

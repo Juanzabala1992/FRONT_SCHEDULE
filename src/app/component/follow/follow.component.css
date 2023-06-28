@@ -1,0 +1,13 @@
+.container{
+    padding: 10px;
+}
+.img_option{
+    width: 30px;
+}
+.text{
+    align-self: center;
+}
+::ng-deep .dropdown-list ul li{
+    display: flex;
+    flex-wrap: nowrap;
+}

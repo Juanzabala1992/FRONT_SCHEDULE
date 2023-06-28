@@ -1,5 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +10,7 @@ import { FollowService } from 'src/app/services/follow.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { first } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-follow',
@@ -20,29 +21,31 @@ import { SharedService } from 'src/app/services/shared.service';
 export class FollowComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   data:any;
-  displayedColumns: string[] = ['recurso','cliente','clientefinal', 'contratocliente','contratoclientefinal',
+  displayedColumns: string[] = ['recurso','cliente','clientefinal', 'contactocliente','contactoclientefinal',
   'fechacontrato','seguimiento', 'puntodeatencion', 'responsable'];
   error:any;
   dataSourcesActivities=new MatTableDataSource<any>();
   dropdownList:any = [];
   selectedItems:any = [];
+  registers!:any;
   dropdownSettings:any = {};
+  
+  fg = new FormGroup({
+    observations: new FormControl('', { nonNullable: true, validators: [Validators.required] }),        
+    puntodeatencion: new FormControl('', { nonNullable: true, validators: [Validators.required] })
+  });
 
   @ViewChild(MatPaginator) paginator!: MatPaginator; 
-  @ViewChild(MatSort) set matSort(sort: MatSort) {    
-    if (!this.dataSource.sort) {
-      this.dataSource.sort = sort;
-    }
-  }
+  @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;  
 
     
   constructor(private router:Router, private followService:FollowService, 
-    private registerService:RegisterService, private sharedService:SharedService){
+    private renderer: Renderer2){
     this.dropdownList = [
       {"id":1,"itemName":"Incidencia", "image":"../../../assets/icons/alert-icon.png"},
-      {"id":2,"itemName":"Advertencia", "image":"../../../assets/icons/green_alert.png"},
-      {"id":3,"itemName":"Resuelto", "image":"../../../assets/icons/yellow-alert.png"} 
+      {"id":2,"itemName":"Resuelto", "image":"../../../assets/icons/green_alert.png"},
+      {"id":3,"itemName":"Advertencia", "image":"../../../assets/icons/yellow-alert.png"} 
     ];
 
   this.dropdownSettings = { 
@@ -52,15 +55,26 @@ export class FollowComponent implements OnInit {
           unSelectAllText:'UnSelect All',
           enableSearchFilter: true,
           classes:"myclass custom-class"
-    };  
+    }; 
+
   }
 
   ngOnInit():void{
-    this.registerService.getAllUsers()
+
+
+
+    this.followService.getFollowClientAll()
     .pipe(first())
     .subscribe({
-        next: (data) => {             
-            console.log("data ---> ", data)
+        next: (data) => {         
+            
+            console.log(data);
+            this.registers = new Array<any>();
+            this.registers = data;
+
+            this.dataSource = new MatTableDataSource(this.registers);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
         },
         error: error => {
             this.error = error;            
@@ -69,20 +83,8 @@ export class FollowComponent implements OnInit {
   }
 
   onItemSelect(item:any){
-    console.log(item);
     console.log(this.selectedItems);
   }
-  OnItemDeSelect(item:any){
-    console.log(item);
-    console.log(this.selectedItems);
-  }
-  onSelectAll(items: any){
-    console.log(items);
-  }
-  onDeSelectAll(items: any){
-    console.log(items);
-  }
-
   exportExcel(): void {
  
     const tableData: any[] = [];
