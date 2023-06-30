@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { FollowModel } from '../component/model/followModel';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,15 @@ export class FollowService {
 
   constructor(private http: HttpClient) { }
 
-  followSave(data:any) {
+  followSave(data:FollowModel) {
+    console.log(data);
     const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
     return this.http.post(`${environment.apiUrl}/follow/save`,
       {
-        idUser:data.idUser,  
-        idSch:data.idSch,    
-        nombre:data.nombre,
-        numero_de_documento:data.numero_de_documento,
-        actividades:data.actividades,
-        fecha_inicio:data.fecha_inicio,
-        fecha_fin:data.fecha_fin,        
-        cliente:data.cliente,
-        total_horas:data.total_horas,
-        responsable_cliente:data.responsable_cliente,
-        observaciones:data.observaciones
+        final_date:data.final_date,
+        follow: data.follow,
+        followId:data.followId,
+        init_date:data.final_date
       },
       {
         headers: { Authorization: `Bearer ${token}` }

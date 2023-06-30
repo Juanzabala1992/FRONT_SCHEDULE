@@ -12,3 +12,6 @@
  .card-title{
     font-weight: bold;
  }
+ .card-img-top{
+    height: 206px;
+ }

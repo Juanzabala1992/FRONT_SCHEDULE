@@ -5,111 +5,138 @@
         </h2>
     </div>
     <div class="sub-container mt-5 mb-3">
-        <div class="card card_universal">
-            <div class="card-body p-1">
-                <form role="form" [formGroup]="fg">
+        <form [formGroup]="tableForm">
+            <div class="col-12 d-flex justify-content-end mt-3">
+                <div class="col-6 d-flex justify-content-start">
+                    <span class="me-1 subtitles mt-3">Fecha inicio: </span> 
+                      <mat-form-field class="date" appearance="fill">
+                            <div class="row">
+                                <input matInput [matDatepicker]="picker" id="date"  formControlName="init_date">                                  
+                            </div>                     
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi #picker></mat-datepicker>
+                          <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
+                      </mat-form-field>         
+                </div>
+                <div class="col-6 d-flex justify-content-start">
+                  <span class="me-1 subtitles mt-3">Fecha fin: </span>
+                      <mat-form-field  class="date" appearance="fill">                      
+                          <input matInput [matDatepicker]="picker2" id="date" formControlName="finish_date">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi #picker2></mat-datepicker>
+                          <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
+                      </mat-form-field>
+                </div>
+            </div>
+            <div class="card card_universal">
+                <div class="card-body p-1" *ngIf="registers">                    
                     <div class="table">
                         <table mat-table [dataSource]="dataSource"  id="registersCustomer" matSort>
-                            <!-- Tipo Column -->
-                            <ng-container matColumnDef="recurso">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Recurso </th>
-                                <td mat-cell *matCellDef="let row"> {{row.profile.nombre}} {{row.profile.apellido}} </td>
-                            </ng-container>        
-                     
-                            <!-- Duracion Column -->
-                            <ng-container matColumnDef="cliente">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-                                <td mat-cell *matCellDef="let row" class="justify-content-center">
-                                     <p>{{row.company.client}}</p>
-                                </td>          
-                            </ng-container>
-                    
-                            <!-- Estado Column -->
-                            <ng-container matColumnDef="clientefinal">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente final</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <p>{{row.company.cliente_final}}</p>
-                                </td>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="contactocliente">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacto cliente</th>
-                                <td mat-cell *matCellDef="let row">
-                                    
-                                    <p>{{row.company.contacto_cliente}}</p>
-                                </td>
-                            </ng-container>
-    
-                            <ng-container matColumnDef="contactoclientefinal">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacto cliente final</th>
-                                <td mat-cell *matCellDef="let row">
-                                    
-                                    <p>{{row.company.contacto_cliente_final}}</p>
-                                </td>
-                            </ng-container>                        
-                   
-                            <ng-container matColumnDef="fechacontrato">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha contrato</th>
-                                <td mat-cell *matCellDef="let row">
-                                    
-                                    <p >{{row.company.fecha_contrato}}</p>
-                                </td>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="seguimiento">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Seguimiento</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <mat-form-field class="observation mt-2">                                    
-                                        <textarea matInput placeholder="Observaciones" formControlName="observations"></textarea>
-                                      </mat-form-field>                           
-                                </td>
-                            </ng-container>
-                    
-                            <ng-container matColumnDef="puntodeatencion">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Punto de atencion</th>
-                                <td mat-cell *matCellDef="let row" style="min-width: 200px;">
-                                    <div class="row">
-                                    <angular2-multiselect [data]="dropdownList" 
-                                        formControlName="puntodeatencion"
-                                        [settings]="dropdownSettings" 
-                                        (onSelect)="onItemSelect($event)"                         
-                                    >
-                                    <c-badge>
-                                        <ng-template let-item="item">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <img class="img_option" src="{{item.image}}" alt="">
-                                                </div>
-                                                <div class="col-8 text">
-                                                    <label style="color: #333;min-width: 150px;">{{item.itemName}}</label>
-                                                </div>
-                                            </div>                                            
-                                        </ng-template>
-                                      </c-badge>
-                                        <c-item>
+                            <ng-container formArrayName="QuestionsAndAnswers">
+                                <ng-container matColumnDef="recurso">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Recurso </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.profile.nombre}} {{row.profile.apellido}} </td>
+                                </ng-container>                   
+                                <!-- Duracion Column -->
+                                <ng-container matColumnDef="cliente">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                                    <td mat-cell *matCellDef="let row" class="justify-content-center">
+                                         <p>{{row.company.client}}</p>
+                                    </td>          
+                                </ng-container>                    
+                                <!-- Estado Column -->
+                                <ng-container matColumnDef="clientefinal">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente final</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <p>{{row.company.cliente_final}}</p>
+                                    </td>
+                                </ng-container>                    
+                                <ng-container matColumnDef="contactocliente">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacto cliente</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        
+                                        <p>{{row.company.contacto_cliente}}</p>
+                                    </td>
+                                </ng-container>
+        
+                                <ng-container matColumnDef="contactoclientefinal">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacto cliente final</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        
+                                        <p>{{row.company.contacto_cliente_final}}</p>
+                                    </td>
+                                </ng-container>                        
+                       
+                                <ng-container matColumnDef="fechacontrato">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha contrato</th>
+                                    <td mat-cell *matCellDef="let row">
+                                        
+                                        <p >{{row.company.fecha_contrato}}</p>
+                                    </td>
+                                </ng-container>
+                        
+                                <ng-container matColumnDef="seguimiento">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Seguimiento</th>
+                                    <td mat-cell *matCellDef="let row; index as i" [formGroupName]="i">
+                                        <mat-form-field class="observation mt-2" >                                    
+                                            <textarea matInput placeholder="Observaciones" formControlName="observations"></textarea>
+                                        </mat-form-field>                           
+                                    </td>
+                                </ng-container>
+                        
+                                <ng-container matColumnDef="puntodeatencion">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Punto de atencion</th>
+                                    <td mat-cell *matCellDef="let row; index as i" style="min-width: 200px;" [formGroupName]="i">
+                                        <div class="row">
+                                        <angular2-multiselect [data]="dropdownList"                                           
+                                            [settings]="dropdownSettings" 
+                                            (onSelect)="onItemSelect($event, i)" 
+                                            formControlName="atention"                                                                    
+                                        >
+                                        <c-badge>
                                             <ng-template let-item="item">
                                                 <div class="row">
-                                                    <div class="col-6 text">
+                                                    <div class="col-4">
+                                                        <img class="img_option" src="{{item.image}}" alt="">
+                                                    </div>
+                                                    <div class="col-8 text">
                                                         <label style="color: #333;min-width: 150px;">{{item.itemName}}</label>
                                                     </div>
-                                                    <div class="col-4 align">
-                                                        <img [src]="item.image" style="width: 30px; border: 1px solid #efefef;margin-right: 20px;" />
-                                                    </div>
-                                                </div>                           
+                                                </div>                                            
                                             </ng-template>
-                                        </c-item>                                                                                  
-                                    </angular2-multiselect> 
-                                    </div>                    
-                                          
-                                </td>
-                            </ng-container>
-    
-                            <ng-container matColumnDef="responsable">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> responsable</th>
-                                <td mat-cell *matCellDef="let row">                                
-                                    <p>Responsable</p>
-                                </td>
-                            </ng-container>
+                                          </c-badge>
+                                            <c-item>
+                                                <ng-template let-item="item">
+                                                    <div class="row">
+                                                        <div class="col-6 text">
+                                                            <label style="color: #333;min-width: 150px;">{{item.itemName}}</label>
+                                                        </div>
+                                                        <div class="col-4 align">
+                                                            <img [src]="item.image" style="width: 30px; border: 1px solid #efefef;margin-right: 20px;" />
+                                                        </div>
+                                                    </div>                           
+                                                </ng-template>
+                                            </c-item>                                                                                  
+                                        </angular2-multiselect> 
+                                        </div>                                    
+                                    </td>
+                                </ng-container>
+        
+                                <ng-container matColumnDef="responsable">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Responsable</th>
+                                    <td mat-cell *matCellDef="let row; index as i" [formGroupName]="i">                                
+                                        <mat-form-field appearance="outline">                                        
+                                            <select matNativeControl formControlName="resolutor">
+                                              <option selected></option>
+                                              <option value="guillermo@pruebas.com">Guillermo</option>       
+                                            </select>
+                                          </mat-form-field>
+                                    </td>
+                                </ng-container>
+                            </ng-container>                            
+                           
+                            <!-- Tipo Column -->
+
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     
@@ -118,15 +145,24 @@
                                 <td class="mat-cell" colspan="4">No se encontraron datos</td>
                             </tr>
                         </table>
+                    </div>                  
+                    <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
+                </div>
+            </div> 
+            <div class="row d-flex justify-content-center mt-3 mb-5">
+                <div class="col-3">
+                    <button mat-mini-fab class="button_footer" (click)="exportExcel()" color="primary" aria-label="Example icon button with a plus one icon">
+                        <img src="../../../assets/icons/file-bar-graph-white.svg" style="width: 20px;">
+                    </button> 
+                </div>
+                <div class="col-3">
+                    <div class="col-2">
+                        <button mat-mini-fab (click)="save()" color="primary" aria-label="Example icon button with a plus one icon">
+                          <img src="../../../assets/icons/icons8-save-80.png" style="width: 20px;">
+                        </button>
                     </div>
-                </form>                
-                <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
-            </div>
-        </div> 
-        <div class="row d-flex justify-content-center mt-3 mb-5">
-            <button mat-mini-fab class="button_footer" (click)="exportExcel()" color="primary" aria-label="Example icon button with a plus one icon">
-                <img src="../../../assets/icons/file-bar-graph-white.svg" style="width: 20px;">
-            </button> 
-        </div>           
+                </div>        
+            </div> 
+        </form>              
     </div> 
 </div>
