@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { FollowModel } from '../component/model/followModel';
+import { FollowModel } from '../model/followModel';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,7 @@ export class FollowService {
 
   constructor(private http: HttpClient) { }
 
-  followSave(data:FollowModel) {
-    console.log(data);
+  followSave(data:FollowModel) {    
     const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
     return this.http.post(`${environment.apiUrl}/follow/save`,
       {

@@ -1,1 +1,127 @@
-<p>register works!</p>
+<div class="container-fluid">
+    <div class="title d-flex justify-content-center mt-4">
+        <h1>Registro Usuarios Nuevos</h1>
+    </div>
+    <div class="sub-container mt-4">
+        <div class="card card_universal">
+            <div class="card-body">
+                <form action="" [formGroup]="registerForm">
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row">
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Nombre</mat-label>
+                                        <input matInput formControlName="nombre">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Apellido</mat-label>
+                                        <input matInput formControlName="apellido">
+                                    </mat-form-field>
+                                </div>  
+                            </div>                                
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row" style="width: 100%;">
+                                <div class="col-12 container_email">
+                                    <mat-form-field class="email">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput formControlName="email">
+                                    </mat-form-field>
+                                </div>           
+                            </div> 
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row">
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Numero de documento</mat-label>
+                                        <input matInput formControlName="numero_de_documento">
+                                    </mat-form-field>
+                                </div>                                
+                                <div class="col-6">                                    
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Tipo de documento</mat-label>
+                                        <input matInput formControlName="tipo_de_documento">
+                                    </mat-form-field>
+                                </div>  
+                            </div>                                
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row" style="width: 100%;">
+                                <div class="col-6">                                    
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Cargo</mat-label>
+                                        <input matInput formControlName="cargo">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>País</mat-label>
+                                        <input matInput formControlName="pais">
+                                    </mat-form-field>
+                                </div>            
+                            </div> 
+                        </div>  
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row">
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Cliente</mat-label>
+                                        <input matInput formControlName="cliente">
+                                    </mat-form-field>
+                                </div>                                
+                                <div class="col-6">                                    
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Cliente final</mat-label>
+                                        <input matInput formControlName="cliente_final">
+                                    </mat-form-field>
+                                </div>  
+                            </div>                                
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <div class="row" style="width: 100%;">
+                                <div class="col-6">                                    
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Direccion</mat-label>
+                                        <input matInput formControlName="direccion">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Telefono</mat-label>
+                                        <input matInput formControlName="telefono">
+                                    </mat-form-field>
+                                </div>   
+                                          
+                            </div> 
+                        </div>  
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-start">
+                            <mat-label>Foto</mat-label>                            
+                        </div>
+                        <div class="col-12 d-flex justify-content-start">
+                            <input type="file" formControlName="foto" (change)="upload($event)" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> 
+        <div class="row d-flex justify-content-center mt-3 mb-5">
+            <div class="col-3">
+                <div class="col-2">
+                    <button mat-mini-fab (click)="save()" color="primary" aria-label="Example icon button with a plus one icon">
+                      <img src="../../../assets/icons/icons8-save-80.png" style="width: 20px;">
+                    </button>
+                </div>
+            </div>        
+        </div>        
+    </div>
+</div>

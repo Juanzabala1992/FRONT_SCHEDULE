@@ -26,20 +26,23 @@ export class RegisterService {
       }));
   }
 
-  userRegister(activityData:any) {
+  userRegister(data:any) {
     const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
-    return this.http.post(`${environment.apiUrl}/save`,
+    return this.http.post(`${environment.apiUrl}/profile/save`,
       {
-        idUser:"0001",
-        email:"email",
-        nombre:"nombre",
-        numero_de_documento:"100000",
-        tipo_de_documento:"C.C",
-        cargo:"Developer",
-        pais:"Colombia",
-        direccion:"Calle falsa 123",
-        telefono:"30000000",
-        foto:"asdas"
+        idUser:data.idUser,
+        email:data.email,
+        apellido:data.apellido,
+        nombre:data.nombre,
+        numero_de_documento:data.numero_de_documento,
+        tipo_de_documento:data.tipo_de_documento,
+        cargo:data.cargo,
+        pais:data.pais,
+        direccion:data.direccion,
+        telefono:data.telefono,
+        foto:data.foto,        
+        cliente: data.cliente,
+        cliente_final: data.cliente_final,
       },
       {
         headers: { Authorization: `Bearer ${token}` }

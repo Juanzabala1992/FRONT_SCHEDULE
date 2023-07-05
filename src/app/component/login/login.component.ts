@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { LoginModel } from '../model/LoginModel';
+import { LoginModel } from '../../model/LoginModel';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/services/shared.service';
 

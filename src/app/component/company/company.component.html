@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="container">
+        <div class="title d-flex justify-content-center mt-5">
+            <h1>
+                Agregar Clientes
+            </h1>
+        </div>
+        <div class="mt-5">
+            <form class="form" role="form" [formGroup]="companyForm">
+                <div class="row">
+                    <div class="col-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Cliente</mat-label>                            
+                            <input matInput placeholder="Cliente" type="text" formControlName="client">
+                        </mat-form-field>                        
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Cliente final</mat-label>                            
+                            <input matInput placeholder="Cliente final" type="text" formControlName="client_final">
+                        </mat-form-field> 
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Contacto cliente</mat-label>                            
+                            <input matInput placeholder="Contacto cliente" type="text" formControlName="contacto_cliente">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-4">
+                        <span class="me-1 subtitles">Fecha contrato: </span> 
+                        <mat-form-field class="date" appearance="fill">
+                            <mat-label>Fecha contrato</mat-label>
+                            <input matInput [matDatepicker]="picker" id="date" formControlName="fecha_contrato">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker touchUi #picker></mat-datepicker>
+                            <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
+                        </mat-form-field>                        
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Contacto cliente final</mat-label>                            
+                            <input matInput placeholder="Contacto cliente final" type="text" formControlName="contacto_cliente_final">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row d-flex justify-content-center mt-3 mb-5">
+            <div class="col-3">
+                <div class="col-2">
+                    <button mat-mini-fab (click)="save()" color="primary" aria-label="Example icon button with a plus one icon">
+                      <img src="../../../assets/icons/icons8-save-80.png" style="width: 20px;">
+                    </button>
+                </div>
+            </div>        
+        </div> 
+    </div>
+</div>

@@ -11,9 +11,23 @@
     width: 100%;
 }
 .logo{
-    width: 50%;
+    width: 50%;    
+}
+.logo:hover{
+    cursor: pointer;
 }
 .icon{
     height: 40px;
     width: 30px;
+}
+.img_profile{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}
+.img_profile_container{
+    width: 103px;
+    height: 103px;
+    border: 2px solid black;
+    border-radius: 100%;
 }

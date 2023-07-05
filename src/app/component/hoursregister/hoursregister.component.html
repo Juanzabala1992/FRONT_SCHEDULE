@@ -33,7 +33,7 @@
               <span class="me-1 subtitles">Fecha inicio: </span> 
                 <mat-form-field class="date" appearance="fill">
                     <mat-label>Fecha inicial</mat-label>
-                    <input matInput [matDatepicker]="picker" id="date" formControlName="initial_date">
+                    <input matInput [matDatepicker]="picker" id="date" formControlName="initial_date" [matDatepickerFilter]="weekendsDatesFilter">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker touchUi #picker></mat-datepicker>
                     <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -43,7 +43,7 @@
             <span class="me-1 subtitles">Fecha fin: </span>
                 <mat-form-field  class="date" appearance="fill">
                     <mat-label>Fecha final</mat-label>
-                    <input matInput [matDatepicker]="picker2" id="date" formControlName="final_date" >
+                    <input matInput [matDatepicker]="picker2" id="date" formControlName="final_date" [matDatepickerFilter]="weekendsDatesFilter">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker touchUi #picker2></mat-datepicker>
                     <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -96,7 +96,7 @@
                     <h3 class="subtitles">Fecha inicial</h3></mat-header-cell>
                   <mat-cell *matCellDef="let element;" [formGroup]="element">
                     <mat-form-field>
-                      <input matInput [matDatepicker]="picker" placeholder="Fecha inicial" formControlName="act_initial_date">
+                      <input matInput [matDatepicker]="picker" placeholder="Fecha inicial" formControlName="act_initial_date" [matDatepickerFilter]="weekendsDatesFilter">
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -108,7 +108,7 @@
                     <h3 class="subtitles">Fecha final</h3></mat-header-cell>
                   <mat-cell *matCellDef="let element;" [formGroup]="element">
                     <mat-form-field>
-                      <input matInput [matDatepicker]="picker" placeholder="Fecha final"formControlName="act_final_date" required>
+                      <input matInput [matDatepicker]="picker" placeholder="Fecha final" formControlName="act_final_date" [matDatepickerFilter]="weekendsDatesFilter" required>
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>

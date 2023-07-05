@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LoginModel } from '../component/model/LoginModel';
+import { LoginModel } from '../model/LoginModel';
 
 
 @Injectable({

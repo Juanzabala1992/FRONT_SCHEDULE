@@ -8,10 +8,20 @@
       </button>
       <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <div class="logo">
+          <li class="nav-item" *ngIf="load">
+            <div class="logo" [matMenuTriggerFor]="menu"(click)="loadData()">                               
                 <img class="icon" src="../../../assets/icons/user.svg" alt="">
-            </div>            
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item class="d-flex justify-content-center">
+                    <div class="img_profile_container">
+                      <img class="img_profile"[src]="imageData" alt="">
+                    </div>
+                  </button>
+                  <button mat-menu-item class="d-flex justify-content-center">{{data_user.nombre}}<span> </span>{{data_user.apellido}}</button>
+                  <button mat-menu-item class="d-flex justify-content-center">{{data_user.email}}</button>
+                  <button mat-menu-item class="d-flex justify-content-center">{{data_user.cargo}}</button>
+                </mat-menu> 
+            </div>                       
           </li>
           <li class="nav-item">
             <div class="logo">

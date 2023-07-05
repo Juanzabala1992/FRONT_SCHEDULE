@@ -11,7 +11,7 @@
                     <span class="me-1 subtitles mt-3">Fecha inicio: </span> 
                       <mat-form-field class="date" appearance="fill">
                             <div class="row">
-                                <input matInput [matDatepicker]="picker" id="date"  formControlName="init_date">                                  
+                                <input matInput [matDatepicker]="picker" id="date"  formControlName="init_date" [matDatepickerFilter]="weekendsDatesFilter">                                  
                             </div>                     
                           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                           <mat-datepicker touchUi #picker></mat-datepicker>
@@ -21,7 +21,7 @@
                 <div class="col-6 d-flex justify-content-start">
                   <span class="me-1 subtitles mt-3">Fecha fin: </span>
                       <mat-form-field  class="date" appearance="fill">                      
-                          <input matInput [matDatepicker]="picker2" id="date" formControlName="finish_date">
+                          <input matInput [matDatepicker]="picker2" id="date" formControlName="finish_date" [matDatepickerFilter]="weekendsDatesFilter">
                           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                           <mat-datepicker touchUi #picker2></mat-datepicker>
                           <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -89,8 +89,7 @@
                                     <td mat-cell *matCellDef="let row; index as i" style="min-width: 200px;" [formGroupName]="i">
                                         <div class="row">
                                         <angular2-multiselect [data]="dropdownList"                                           
-                                            [settings]="dropdownSettings" 
-                                            (onSelect)="onItemSelect($event, i)" 
+                                            [settings]="dropdownSettings"                                            
                                             formControlName="atention"                                                                    
                                         >
                                         <c-badge>

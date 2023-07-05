@@ -10,10 +10,12 @@ import { FollowService } from 'src/app/services/follow.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { count, first } from 'rxjs';
 import { SharedService } from 'src/app/services/shared.service';
-import { FollowModel } from '../model/followModel';
-import { FollowInsideModel } from '../model/followInisideModel';
+import { FollowModel } from '../../model/followModel';
+import { FollowInsideModel } from '../../model/followInisideModel';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DateAdapter } from '@angular/material/core';
+import { DateFilterFn } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-follow',
@@ -30,21 +32,19 @@ export class FollowComponent implements OnInit {
   selectedItems: any = [];
   registers!: any;
   dropdownSettings: any = {};
-
   tableForm!: FormGroup;
-
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
 
   constructor(private router: Router, private followService: FollowService, 
-    private fb: FormBuilder, private _snackBar: MatSnackBar) {
+    private fb: FormBuilder, private _snackBar: MatSnackBar, private sharedService:SharedService) {
     this.dropdownList = [
       { "id": 1, "itemName": "Incidencia", "image": "../../../assets/icons/alert-icon.png" },
       { "id": 2, "itemName": "Resuelto", "image": "../../../assets/icons/green_alert.png" },
       { "id": 3, "itemName": "Advertencia", "image": "../../../assets/icons/yellow-alert.png" }
     ];
-
     this.dropdownSettings = {
       singleSelection: true,
       text: "opcion",
@@ -83,9 +83,6 @@ export class FollowComponent implements OnInit {
           this.error = error;
         }
       });
-     this.tableForm.valueChanges.subscribe(data=>{
-      console.log("data ----> ", data);
-     })
   }
 
   create(item:any){
@@ -117,8 +114,8 @@ export class FollowComponent implements OnInit {
         atention: atention
       }
     });
-    const init=this.QuestionsAndAnswers.get('init_date')?.value;
-    const finish=this.QuestionsAndAnswers.get('finish_date')?.value;
+    const init=this.tableForm.get('init_date')?.value;
+    const finish=this.tableForm.get('finish_date')?.value;
     const randomCode = this.generateRandomCode();
     const data_toSave: FollowModel = {
       followId: randomCode,
@@ -149,9 +146,6 @@ export class FollowComponent implements OnInit {
     return prefix + numbers.toString();
   }
 
-  onItemSelect(item: any, i: number) {
-    console.log("items with index -->", item, i);
-  }
 
   exportExcel(): void {
     const element = document.getElementById('registersCustomer');
@@ -160,7 +154,9 @@ export class FollowComponent implements OnInit {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     XLSX.writeFile(workbook, 'registros.xlsx');
   }
-
+  weekendsDatesFilter:DateFilterFn<Date | null> = (date:any): boolean => {
+    return this.sharedService.weekendsDatesFilter(date);
+  }
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,

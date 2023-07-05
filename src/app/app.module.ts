@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -28,6 +28,16 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 import { FollowComponent } from './component/follow/follow.component';
 import { InformAdminComponent } from './component/inform-admin/inform-admin.component';
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter,MatRippleModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { CompanyComponent } from './component/company/company.component';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -41,7 +51,8 @@ import { InformAdminComponent } from './component/inform-admin/inform-admin.comp
     ConsoleComponent,
     InformComponent,
     FollowComponent,
-    InformAdminComponent
+    InformAdminComponent,
+    CompanyComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +72,23 @@ import { InformAdminComponent } from './component/inform-admin/inform-admin.comp
     MatAutocompleteModule,
     MatPaginatorModule,
     FormsModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    MatMenuModule
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'fill' },
+    },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { Component, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./component/login/login.component";
 import { HoursregisterComponent } from "./component/hoursregister/hoursregister.component";
@@ -8,6 +8,7 @@ import { ConsoleComponent } from "./component/console/console.component";
 import { InformComponent } from "./component/inform/inform.component";
 import { FollowComponent } from "./component/follow/follow.component";
 import { InformAdminComponent } from "./component/inform-admin/inform-admin.component";
+import { CompanyComponent } from "./component/company/company.component";
 
 const routes: Routes = [
     { 
@@ -42,6 +43,10 @@ const routes: Routes = [
       path:'inform/follow',
       component:FollowComponent
     },
+    {
+      path:'company',
+      component:CompanyComponent
+    }
  
   ];  
   
