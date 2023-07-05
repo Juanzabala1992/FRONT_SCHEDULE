@@ -14,4 +14,7 @@
  }
  .card-img-top{
     height: 206px;
- }
+}
+.carousel-inner{    
+    height: 60vh;
+}
