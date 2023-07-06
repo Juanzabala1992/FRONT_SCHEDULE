@@ -40,6 +40,11 @@ export class LoginComponent implements OnInit {
     .subscribe({
         next: (data) => {
           this.sharedService.setId=data.idUser;
+          const userString =localStorage.getItem('user');
+          if(userString){
+            const user = JSON.parse(userString);
+            this.sharedService.setUser=user;           
+          }          
           if(data.role=="USER"){
             this.router.navigate(['/schedule']);  
           }else

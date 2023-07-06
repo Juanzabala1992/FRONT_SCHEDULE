@@ -1,0 +1,35 @@
+.container{
+    padding: 0;
+}
+::ng-deep .modal-content {
+    width: 580px !important;
+}
+::ng-deep .modal-dialog{
+    margin-top: 5%!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.listStyle{
+    list-style:none;
+}
+.button-accept{
+    border-top: 1px solid #707070;
+}
+.title{
+    font-size: 18px;
+}
+.close{
+    margin-right: 20px;
+    margin-top: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    color:#008BD2;
+    font-size: 16px;
+}
+.close:hover{
+    cursor: pointer;
+    color:#008BD2;
+}

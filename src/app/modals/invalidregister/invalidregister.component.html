@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row close mb-2" (click)="close()">
+        X
+    </div>
+    <div class="title mt-4 ps-3 pe-3 row">
+        <div class="col-12">
+            <label for="">Faltan Campos por diligenciar</label>
+        </div>               
+    </div>
+    <div class="list mt-2 ps-3 pe-3">
+        <ul class="listStyle">
+            <li *ngFor="let list of labels">
+                - {{list}}
+            </li>
+        </ul>
+    </div>
+    <div class=" button-accept d-flex justify-content-end mt-2 mb-2">
+        <button mat-raised-button color="primary" class="mt-2 me-5" (click)="close()">
+            <label for="">Aceptar</label></button>
+    </div>
+</div>

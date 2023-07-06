@@ -33,7 +33,10 @@
               <span class="me-1 subtitles">Fecha inicio: </span> 
                 <mat-form-field class="date" appearance="fill">
                     <mat-label>Fecha inicial</mat-label>
-                    <input matInput [matDatepicker]="picker" id="date" formControlName="initial_date" [matDatepickerFilter]="weekendsDatesFilter">
+                    <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" 
+                    id="date" formControlName="initial_date" [matDatepickerFilter]="weekendsDatesFilter"
+                    (dateChange)="onStartDateSelected($event)" required                   
+                    >
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker touchUi #picker></mat-datepicker>
                     <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -43,7 +46,8 @@
             <span class="me-1 subtitles">Fecha fin: </span>
                 <mat-form-field  class="date" appearance="fill">
                     <mat-label>Fecha final</mat-label>
-                    <input matInput [matDatepicker]="picker2" id="date" formControlName="final_date" [matDatepickerFilter]="weekendsDatesFilter">
+                    <input matInput [matDatepicker]="picker2" [min]="minDate" [max]="maxDate" id="date" 
+                    formControlName="final_date" [matDatepickerFilter]="weekendsDatesFilter" required>
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker touchUi #picker2></mat-datepicker>
                     <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -72,7 +76,7 @@
                     <mat-cell *matCellDef="let element;" [formGroup]="element">            
                       <mat-form-field appearance="outline">
                         <mat-label>hh</mat-label>
-                        <select matNativeControl formControlName="hours">
+                        <select matNativeControl required formControlName="hours">
                           <option selected></option>
                           <option value="{{hour}}" *ngFor="let hour of hours">{{hour | twoDigit}}</option>       
                         </select>
@@ -83,7 +87,7 @@
                       </div>                     
                       <mat-form-field appearance="outline">
                         <mat-label>mm</mat-label>
-                        <select matNativeControl formControlName="minutes">
+                        <select matNativeControl required formControlName="minutes">
                           <option value="" selected></option>
                           <option value="{{minute}}" *ngFor="let minute of minutes">{{minute | twoDigit}}</option>       
                         </select>
@@ -96,7 +100,7 @@
                     <h3 class="subtitles">Fecha inicial</h3></mat-header-cell>
                   <mat-cell *matCellDef="let element;" [formGroup]="element">
                     <mat-form-field>
-                      <input matInput [matDatepicker]="picker" placeholder="Fecha inicial" formControlName="act_initial_date" [matDatepickerFilter]="weekendsDatesFilter">
+                      <input matInput [matDatepicker]="picker" [min]="minDate" [min]="minDateAct" [max]="maxDateAct" formControlName="act_initial_date" [matDatepickerFilter]="weekendsDatesFilter" required>
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -108,7 +112,7 @@
                     <h3 class="subtitles">Fecha final</h3></mat-header-cell>
                   <mat-cell *matCellDef="let element;" [formGroup]="element">
                     <mat-form-field>
-                      <input matInput [matDatepicker]="picker" placeholder="Fecha final" formControlName="act_final_date" [matDatepickerFilter]="weekendsDatesFilter" required>
+                      <input matInput [matDatepicker]="picker" placeholder="Fecha final" [min]="minDateAct" [max]="maxDateAct" formControlName="act_final_date" [matDatepickerFilter]="weekendsDatesFilter" required>
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -157,7 +161,7 @@
                   <div class="col-6">
                     <mat-form-field class="example-full-width">
                       <mat-label>Cliente</mat-label>
-                      <input matInput placeholder="Cliente" value="Sushi" formControlName="client">
+                      <input matInput placeholder="Cliente" value="Sushi" formControlName="client" required>
                     </mat-form-field>
                   </div>
                 </div>                
@@ -170,7 +174,7 @@
                   <div class="col-6">
                     <mat-form-field class="example-full-width">
                       <mat-label>Responsable</mat-label>
-                      <input matInput placeholder="Cliente" formControlName="final_client">
+                      <input matInput placeholder="Cliente" formControlName="final_client" required>
                     </mat-form-field>
                   </div>
                 </div>                

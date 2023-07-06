@@ -44,9 +44,6 @@ export class RegisterComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.registerForm.valueChanges.subscribe(data=>{
-      console.log("Data-->", data);
-    });
   }
   upload($event:any){
     const target = $event.target as HTMLInputElement;

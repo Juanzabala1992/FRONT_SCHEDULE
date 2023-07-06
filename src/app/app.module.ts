@@ -37,7 +37,9 @@ import { DateAdapter,MatRippleModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { CompanyComponent } from './component/company/company.component';
 import {MatMenuModule} from '@angular/material/menu';
-
+import { ChangepasswordComponent } from './component/changepassword/changepassword.component';
+import { InvalidregisterComponent } from './modals/invalidregister/invalidregister.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import {MatMenuModule} from '@angular/material/menu';
     InformComponent,
     FollowComponent,
     InformAdminComponent,
-    CompanyComponent
+    CompanyComponent,
+    ChangepasswordComponent,
+    InvalidregisterComponent
   ],
   imports: [
     BrowserModule,
@@ -73,10 +77,11 @@ import {MatMenuModule} from '@angular/material/menu';
     MatPaginatorModule,
     FormsModule,
     AngularMultiSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    NgbModule
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-GB' },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'fill' },

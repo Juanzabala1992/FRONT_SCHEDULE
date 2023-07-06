@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { RegisterService } from 'src/app/services/register.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -19,7 +20,9 @@ export class NavbarComponent implements OnInit {
   load:boolean=false;
 
   constructor(private registerService:RegisterService, 
-    private sharedService:SharedService, private sanitizer: DomSanitizer,) {
+    private sharedService:SharedService, private sanitizer: DomSanitizer,
+    private router: Router
+    ) {
     this.id$=sharedService.getId;
    }
 
@@ -43,6 +46,9 @@ export class NavbarComponent implements OnInit {
             this.error = error;            
         }
     }); 
+  }
+  password(){
+    this.router.navigate(['/change-password']);
   }
   base64ToArrayBuffer(base64Str:any, foto:any) { 
     this.load=true;   

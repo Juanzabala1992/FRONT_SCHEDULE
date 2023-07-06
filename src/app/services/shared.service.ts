@@ -7,9 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 export class SharedService {
 
   private id:BehaviorSubject<any>;
+  private user:BehaviorSubject<any>;
 
-  constructor() { 
-    this.id = new BehaviorSubject({});
+  constructor() {
+    this.id = new BehaviorSubject({}); 
+    this.user = new BehaviorSubject({});
   }
 
   set setId(data:string){
@@ -17,6 +19,13 @@ export class SharedService {
   }
   get getId(){
     return this.id.asObservable();    
+  }
+
+  set setUser(data:any){
+    this.user.next(data);    
+  }
+  get getUser(){    
+    return this.user.asObservable();    
   }
 
   weekendsDatesFilter = (d: Date | null): boolean => {
