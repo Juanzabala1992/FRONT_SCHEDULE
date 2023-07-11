@@ -2,45 +2,49 @@
     <div class="container-login d-flex justify-content-center align-items-center mx">
         <div class="row card" id="card-login">
             <div class="card-body" id="card-login-body">
-                <div class="title d-flex justify-content-center mb-5 mt-3">
-                    <h1>Iniciar Sesión</h1>
+              <div class="image_container mb-2 d-flex justify-content-center">
+                <img class="logo_image" src="../../../assets/logo/Logo_factech_new.PNG" alt="">
+              </div>  
+                <div class="title d-flex justify-content-center mb-2 mt-3">
+                    <h1 class="intro">Entrar</h1>
+                </div>
+                <div class="row mb-3 mt-2 text-center">
+                  <span class="subtitle_login_data">Inicia sesión para seguir conectado</span>
                 </div>
               <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
-                <div class="row mb-3 ">
-                  <div class="col-3 label-login">
-                    <label class="username-label" for="username">User</label>
+                
+                <div class="row mb-12 ">
+                  <div class="col-12 label-login">
+                    <label class="username-label text-left mb-1" for="username">Email</label>
                   </div>
-                  <div class="col-6">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
                       name="username"
-                      id="login-pass"
-                      placeholder="Nombre de usuario"
+                      id="login-pass"                      
                       formControlName="username"
-                      #username
-                      data-cy="username"
+                      #username                     
                     />
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <div class="col-3 label-login">
-                    <label for="password">Password</label>
+                  <div class="col-12 label-login text-left mb-1 mt-1">
+                    <label for="password">Contraseña</label>
                   </div>
-                  <div class="col-6">
+                  <div class="col-12">
                     <input
                       type="password"
                       class="form-control"
                       name="password"
-                      id="login-pass"
-                      placeholder="Su contraseña"
+                      id="login-pass"                      
                       formControlName="password"
                       data-cy="password"
                     />
                   </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button mat-raised-button class="login button" type="submit" data-cy="submit">Iniciar sesión</button>
+                    <button mat-raised-button class="login button" type="submit" data-cy="submit">Entrar</button>
                 </div>            
               </form>
             </div>

@@ -10,6 +10,7 @@ import { FollowComponent } from "./component/follow/follow.component";
 import { InformAdminComponent } from "./component/inform-admin/inform-admin.component";
 import { CompanyComponent } from "./component/company/company.component";
 import { ChangepasswordComponent } from "./component/changepassword/changepassword.component";
+import { NotificationComponent } from "./modals/notification/notification.component";
 
 const routes: Routes = [
     { 
@@ -51,6 +52,10 @@ const routes: Routes = [
     {
       path:'change-password',
       component:ChangepasswordComponent
+    },
+    {
+      path:'notifications',
+      component:NotificationComponent
     }
  
   ];  

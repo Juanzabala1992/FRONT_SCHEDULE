@@ -1,0 +1,31 @@
+<div>
+   <div>
+      <form action="" [formGroup]="loginForm">
+        <div>          
+          <input type="text" id="nickname" placeholder="nickname" formControlName="nickname"/>
+        </div>
+        <br>
+        <div>
+          <button id="sendMessage" onclick="sendMessage({callback: sendMessage})">Send common message</button>
+          <input type="text" id="text" placeholder="message" formControlName="text"/>
+        </div>
+        <br/>
+        <div>
+          <button id="sendPrivateMessage" onclick="({callback:sendPrivateMessage});">Send private message</button>
+          <input type="text" id="privateText" placeholder="message" formControlName="message"/>
+          <input type="text" id="to" placeholder="to" formControlName="to"/>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <h2>Messages:</h2>
+        <div>
+          <div *ngIf="messages">
+          <div class="ml-5">
+            {{messages.from}} : {{messages.content}}
+            
+          </div>  
+          </div>
+        </div>
+      </form>  
+    </div>

@@ -189,28 +189,29 @@ export class HoursregisterComponent implements OnInit {
         }
       }
     });
-    let modal = this.ngbModal.open(InvalidregisterComponent,{ size: 'sm'});
-    modal.componentInstance.data = controls;
- 
-    /*const uuid = uuidv4();  
-    const work_hours=this.fg.get('promos')?.value;
-    const finish = this.fg.get('final_date')?.value;
-    const init = this.fg.get('initial_date')?.value;
+    if(controls.length !=0){
+      let modal = this.ngbModal.open(InvalidregisterComponent,{ size: 'sm'});
+      modal.componentInstance.data = controls;
+    }else{
+      const uuid = uuidv4();  
+      const work_hours=this.fg.get('promos')?.value;
+      const finish = this.fg.get('final_date')?.value;
+      const init = this.fg.get('initial_date')?.value;
 
-    let  result = work_hours.map((data:any)=>{
-          let result_hours=Number(data.hours);
-          let result_minutes=Number(data.minutes);
-          if(result_hours<10){
-            `0${data.hours}`
-          }
-          if(result_minutes<10){
-            `0${data.minutes}`
-          }
-      return {
-        hours:`${data.hours}:${data.minutes}`,
-        initial_date:data.act_initial_date,
-        final_date:data.act_final_date,
-        data:data.activities
+      let  result = work_hours.map((data:any)=>{
+            let result_hours=Number(data.hours);
+            let result_minutes=Number(data.minutes);
+            if(result_hours<10){
+              `0${data.hours}`
+            }
+            if(result_minutes<10){
+              `0${data.minutes}`
+            }
+        return {
+          hours:`${data.hours}:${data.minutes}`,
+          initial_date:data.act_initial_date,
+          final_date:data.act_final_date,
+          data:data.activities
       };
     })
     let data={
@@ -240,8 +241,9 @@ export class HoursregisterComponent implements OnInit {
     this.openSnackBar(
       'Su registro se guardo exitosamente!',
       'OK'
-    );*/
-  }
+    );
+      }  
+    }
 
   history(){
     this.router.navigate(['/history']);

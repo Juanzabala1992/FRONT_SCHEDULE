@@ -1,11 +1,3 @@
-.button_footer{
-    opacity: 0.5;
-}
-.button_footer:hover{
-    width: 60px;
-    height: 60px;
-    opacity: 1;
-}
 .option-image{
   width: 30px;
   height: 25px;

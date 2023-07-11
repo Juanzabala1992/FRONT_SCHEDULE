@@ -1,48 +1,62 @@
 .container-fluid{
-    background-image: url('../../../assets/backgruond/background_login.jpg');
+    /*background-image: url('../../../assets/backgruond/background_login.jpg');*/
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: 90vh;
 }
 .title{
-    color: gray;
+    color: #212121;
+    font-weight: 700;    
+}
+.subtitle_login_data{
+  color: #717171;
+}
+.intro{
+  font-weight: 700;
 }
   .card-login-body {
     border: none ;
   }
   #card-login {
-    border-radius: 40px;
-    background: linear-gradient(rgba(5,7,12,0.7), rgba(5,7,12,0.7));
+     border: none;
+    /*background: linear-gradient(rgba(242, 229, 248,0.7), rgba(242, 229, 248,0.7));*/
   }
   #login-pass {
     border: none ;
-    border-bottom: 1px solid #fe6f00 ;
+    border: 1px solid #717171;
+    border-radius: 0px;
   }
   .form-control {
     border: none ;
-    border-bottom: 1px solid #fe6f00 ;
+    border-bottom: 1px solid #717171 ;
+    border-radius: 0px;
   }
   .ng-invalid:not(form) {
     border-left: 5px solid red ;
   }
+  .logo_image{
+    width: 50%;
+  }
   .login {
     padding: auto ;
-    color: #333333 ;
-    border: none ;
-    border-radius: 20px ;
-    height: 50px ;
-    background: linear-gradient(rgba(93,101,113,0.8), rgba(93,101,113,0.8)) ; ;
-    box-shadow: inset 0 0 0 0 #f5f3f7 ;
+    color: #FFFFFF !important;
+    border: none;
+    height: 45px;
+    width: 60%;
+    background: rgb(205,72,212);
+    background: linear-gradient(90deg, rgba(205,72,212,1) 0%, rgba(240,94,101,1) 98%, rgba(248,157,151,1) 100%);
     transition: ease-out 0.5s ;
     outline: none ;
   }
   .login:hover {
-    box-shadow: inset 300px 0 0 0 #f5f3f7 ;
+    /*box-shadow: inset 300px 0 0 0 rgb(248,157,151);*/
+    background: rgb(248,157,151);
+    background: linear-gradient(90deg, rgba(248,157,151,1) 0%, rgba(240,94,101,1) 2%, rgba(205,72,212,1) 100%);
+    color: #212121 !important;
   }
   .label-login {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    color:#717171 ;
   }
   .icon-pro {
     width: 30px;

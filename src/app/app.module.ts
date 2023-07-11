@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -40,6 +40,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import { ChangepasswordComponent } from './component/changepassword/changepassword.component';
 import { InvalidregisterComponent } from './modals/invalidregister/invalidregister.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationComponent } from './modals/notification/notification.component';
+import { SocketinterceptorsService } from './interceptors/socketinterceptors.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     InformAdminComponent,
     CompanyComponent,
     ChangepasswordComponent,
-    InvalidregisterComponent
+    InvalidregisterComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -78,10 +81,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     AngularMultiSelectModule,
     MatMenuModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'X-XSRF-TOKEN',
+    }),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-GB' },
+    {provide: HTTP_INTERCEPTORS, 
+    useClass:SocketinterceptorsService,
+      multi:true
+    },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'fill' },

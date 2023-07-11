@@ -5,7 +5,7 @@
     width: 100%;
 }
 .navbar-nav{
-    width: 10%; 
+    width: 18%; 
 }
 .nav-item{
     width: 100%;
@@ -30,4 +30,12 @@
     height: 103px;
     border: 2px solid black;
     border-radius: 100%;
+}
+::ng-deep .bg-body-tertiary{
+    background-color: white!important;
+    border-bottom: solid 1px #AB3BD5;
+}
+.icon_circule{
+    height: 42px;
+    width: 36px;
 }

@@ -64,5 +64,8 @@ export class NavbarComponent implements OnInit {
     this.imageData = URL.createObjectURL(blob);
 
   }
+  notifications(){
+    this.router.navigate(['/notifications']);
+  }
 
 }
