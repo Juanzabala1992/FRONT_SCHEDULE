@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit {
       });
     });
 
-    this.socket = new SockJS(`http://localhost:8091/ws`);
+    this.socket = new SockJS(`http://localhost:8091/ws?user==${user.user}`);
     this.stompClient = Stomp.over(this.socket);  
     this.stompClient.connect({}, (frame: any) => {
       console.log(frame);
