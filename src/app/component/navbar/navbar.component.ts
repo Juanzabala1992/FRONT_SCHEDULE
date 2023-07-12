@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Stomp } from '@stomp/stompjs';
 import { first } from 'rxjs';
+import * as SockJS from 'sockjs-client';
 import { RegisterService } from 'src/app/services/register.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -18,22 +21,74 @@ export class NavbarComponent implements OnInit {
   data_user!:any;
   imageData!:any;
   load:boolean=false;
+  view=false;
+
+  stompClient: any = null;
+  privateStompClient: any = null;
+  socket: any;
+  user$: any;
+  messages:any;
+  user:any;
+
+  loginForm = new FormGroup({
+    text: new FormControl('', { validators: [Validators.required] }),
+    message: new FormControl('', { validators: [Validators.required] }),
+    to: new FormControl('', { validators: [Validators.required] }),  
+    nickname: new FormControl('', { validators: [Validators.required] }),  
+  });
 
   constructor(private registerService:RegisterService, 
     private sharedService:SharedService, private sanitizer: DomSanitizer,
     private router: Router
     ) {
-    this.id$=sharedService.getId;
+    this.id$=this.sharedService.getId;
    }
 
   ngOnInit(): void {
+
+    this.router.events.subscribe((event=>{
+      if(this.router.url.includes('/login')){
+          this.view=false;
+      }
+      else{
+          this.view=true;
+          const userString=localStorage.getItem('user');          
+          if(userString){
+            const user = JSON.parse(userString);
+            this.socketComfig(user);      
+          }
+      }
+    }));
+
     this.id$.subscribe((id:string)=>{
       this.id_user=id;
       if(this.id_user[0]){
         this.loadData();
       }
-    }); 
-  
+    });      
+  }
+  socketComfig(user:any){
+    
+    this.user=user.user;  
+    this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
+    console.log("Socket conection!");
+    this.privateStompClient = Stomp.over(this.socket);
+    this.privateStompClient.connect({}, (frame: any) => {
+      console.log(frame);
+      this.privateStompClient.subscribe('/user/specific', (result: any) => {
+        console.log(result.body);
+        this.show(JSON.parse(result.body));
+      });
+    });
+
+    this.socket = new SockJS(`http://localhost:8091/ws`);
+    this.stompClient = Stomp.over(this.socket);  
+    this.stompClient.connect({}, (frame: any) => {
+      console.log(frame);
+      this.stompClient.subscribe('/common/messages', (result: any) => {
+        this.show(JSON.parse(result.body));
+      });
+    });
   }
   loadData(){    
     this.registerService.getUser(this.id_user)
@@ -46,7 +101,42 @@ export class NavbarComponent implements OnInit {
             this.error = error;            
         }
     }); 
+  }  
+  sendMessage() {
+    let text = this.loginForm.get('text')?.value;
+    let from = this.loginForm.get('nickname')?.value;
+    
+    let idUser = this.user;
+    console.log("idUser ---> ", idUser);
+
+    this.stompClient.send("/app/application", {}, JSON.stringify(
+      {
+      'content': text, 
+      'origin': from,
+      'destination':'all',
+      'idUser': idUser,
+      'state': false
+      }
+      ));
   }
+  
+  sendPrivateMessage() {
+    let text = this.loginForm.get('message')?.value;
+    let from = this.loginForm.get('nickname')?.value;
+    let to = this.loginForm.get('to')?.value;
+    let idUser = this.user;
+
+    console.log("idUser ", idUser);
+
+    this.stompClient.send("/app/private", {}, JSON.stringify({
+      'content': text, 
+      'destination': to, 
+      'origin': from,
+      'idUser': idUser,
+      'state': false
+    }));
+  }
+
   password(){
     this.router.navigate(['/change-password']);
   }
@@ -59,8 +149,6 @@ export class NavbarComponent implements OnInit {
       Array.from(binaryString, (char) => char.charCodeAt(0))
     );
     const blob = new Blob([bytes], { type: 'image/png' });
-
-    // Crear una URL válida para el objeto Blob
     this.imageData = URL.createObjectURL(blob);
 
   }
@@ -68,4 +156,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/notifications']);
   }
 
+  show(message: any) {
+    this.messages=message;
+    console.log("message--->", this.messages);
+  }
 }

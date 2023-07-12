@@ -1,17 +1,20 @@
+<p>notification works!</p>
 <div>
-   <div>
+   <h2>WebSocket Test</h2>
+  
+    <div>
       <form action="" [formGroup]="loginForm">
-        <div>          
+        <div>
           <input type="text" id="nickname" placeholder="nickname" formControlName="nickname"/>
         </div>
         <br>
         <div>
-          <button id="sendMessage" onclick="sendMessage({callback: sendMessage})">Send common message</button>
+          <button id="sendMessage" (click)="sendMessage()">Send common message</button>
           <input type="text" id="text" placeholder="message" formControlName="text"/>
         </div>
         <br/>
         <div>
-          <button id="sendPrivateMessage" onclick="({callback:sendPrivateMessage});">Send private message</button>
+          <button id="sendPrivateMessage" (click)="sendPrivateMessage();">Send private message</button>
           <input type="text" id="privateText" placeholder="message" formControlName="message"/>
           <input type="text" id="to" placeholder="to" formControlName="to"/>
         </div>
@@ -22,8 +25,7 @@
         <div>
           <div *ngIf="messages">
           <div class="ml-5">
-            {{messages.from}} : {{messages.content}}
-            
+            {{messages.origin}} : {{messages.content}}
           </div>  
           </div>
         </div>

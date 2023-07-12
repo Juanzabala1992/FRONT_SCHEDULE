@@ -13,9 +13,10 @@ import { ChangepasswordComponent } from "./component/changepassword/changepasswo
 import { NotificationComponent } from "./modals/notification/notification.component";
 
 const routes: Routes = [
-    { 
-        path: '', 
-        component: LoginComponent
+    {
+      path:'',
+      redirectTo:'/login',
+      pathMatch:'full'
     },
     { 
       path: 'schedule', 
@@ -56,8 +57,11 @@ const routes: Routes = [
     {
       path:'notifications',
       component:NotificationComponent
+    },
+    {
+      path:'login',
+      component:LoginComponent
     }
- 
   ];  
   
   @NgModule({
