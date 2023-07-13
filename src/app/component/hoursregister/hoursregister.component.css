@@ -22,3 +22,17 @@ mat-row{
 ::ng-deep .mi-clase-mat-mini-fab {
     background-color: white !important;
 }
+.plus_one{
+    z-index: 2;
+    position: relative;
+    top: -450px;
+    left: -80px;
+    width: 30px;
+}
+.plus_one_ext{
+    z-index: 2;
+    position: relative;
+    top: -440px;
+    left: -80px;
+    width: 30px;
+}

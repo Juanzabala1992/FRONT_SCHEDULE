@@ -20,7 +20,12 @@ export class InvalidregisterComponent {
     final_date:"Fecha final", 
     client:"Cliente", 
     final_client:"Cliente final", 
-    total_horas:"Totalidad horas"
+    total_horas:"Totalidad horas",
+    activitiesExt:"Actividades", 
+    hoursExt:"Horas Extras", 
+    minutesExt:"Minutos de las horas Extras", 
+    act_final_dateExt:"Fecha final de alguna de las actividades de las extras", 
+    act_initial_dateExt:"Fecha inicial de alguna de las actividades de las extras", 
   }
   constructor(
     public ngbModal: NgbModal
@@ -34,8 +39,7 @@ export class InvalidregisterComponent {
     const uniqueArray = this.labels.filter((value: string, index: number, self: string | any[]) => {
       return self.indexOf(value) === index;
     });
-    this.labels=uniqueArray;
-    console.log(this.labels);
+    this.labels=uniqueArray;    
   }
   close(){
     this.ngbModal.dismissAll("close");

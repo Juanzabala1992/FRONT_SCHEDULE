@@ -45,17 +45,18 @@ export class NavbarComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
+    let count=0;
     this.router.events.subscribe((event=>{
       if(this.router.url.includes('/login')){
           this.view=false;
       }
       else{
           this.view=true;
-          const userString=localStorage.getItem('user');          
+          const userString=localStorage.getItem('user');   
+          count++;
           if(userString){
             const user = JSON.parse(userString);
-            this.socketComfig(user);      
+            this.socketComfig(user, count);      
           }
       }
     }));
@@ -67,28 +68,28 @@ export class NavbarComponent implements OnInit {
       }
     });      
   }
-  socketComfig(user:any){
-    
-    this.user=user.user;  
-    this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
-    console.log("Socket conection!");
-    this.privateStompClient = Stomp.over(this.socket);
-    this.privateStompClient.connect({}, (frame: any) => {
-      console.log(frame);
-      this.privateStompClient.subscribe('/user/specific', (result: any) => {
-        console.log(result.body);
-        this.show(JSON.parse(result.body));
+  socketComfig(user:any, count:number){
+    if(count<=1){
+      this.user=user.user;  
+      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
+      this.privateStompClient = Stomp.over(this.socket);
+  
+      
+  
+      this.privateStompClient.connect({}, (frame: any) => {        
+        this.privateStompClient.subscribe('/user/specific', (result: any) => {          
+          this.show(JSON.parse(result.body));
+        });
       });
-    });
-
-    this.socket = new SockJS(`http://localhost:8091/ws?user==${user.user}`);
-    this.stompClient = Stomp.over(this.socket);  
-    this.stompClient.connect({}, (frame: any) => {
-      console.log(frame);
-      this.stompClient.subscribe('/common/messages', (result: any) => {
-        this.show(JSON.parse(result.body));
+  
+      this.socket = new SockJS(`http://localhost:8091/ws?user==${user.user}`);
+      this.stompClient = Stomp.over(this.socket);  
+      this.stompClient.connect({}, (frame: any) => {        
+        this.stompClient.subscribe('/common/messages', (result: any) => {
+          this.show(JSON.parse(result.body));
+        });
       });
-    });
+    }  
   }
   loadData(){    
     this.registerService.getUser(this.id_user)
@@ -100,14 +101,12 @@ export class NavbarComponent implements OnInit {
         error: error => {
             this.error = error;            
         }
-    }); 
+    });    
   }  
   sendMessage() {
     let text = this.loginForm.get('text')?.value;
-    let from = this.loginForm.get('nickname')?.value;
-    
+    let from = this.loginForm.get('nickname')?.value;    
     let idUser = this.user;
-    console.log("idUser ---> ", idUser);
 
     this.stompClient.send("/app/application", {}, JSON.stringify(
       {
@@ -125,8 +124,6 @@ export class NavbarComponent implements OnInit {
     let from = this.loginForm.get('nickname')?.value;
     let to = this.loginForm.get('to')?.value;
     let idUser = this.user;
-
-    console.log("idUser ", idUser);
 
     this.stompClient.send("/app/private", {}, JSON.stringify({
       'content': text, 
@@ -157,7 +154,6 @@ export class NavbarComponent implements OnInit {
   }
 
   show(message: any) {
-    this.messages=message;
-    console.log("message--->", this.messages);
+    this.messages=message;    
   }
 }
