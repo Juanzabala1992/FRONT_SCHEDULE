@@ -66,7 +66,14 @@
           </li>
           <li class="nav-item">
             <div class="logo">
-                <img class="icon" src="../../../assets/icons/bell.svg" alt="" (click)="notifications()" >
+              <div class="notification_container">
+                <div class="icon_bell">
+                  <img class="icon" src="../../../assets/icons/bell.svg" alt="" (click)="notifications()" >
+                  <div class="number">
+                    <span>{{messages}}</span>
+                  </div>
+                </div>                
+              </div>                
             </div>            
           </li>
         </ul>

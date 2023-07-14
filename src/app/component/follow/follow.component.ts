@@ -33,10 +33,10 @@ export class FollowComponent implements OnInit {
   registers!: any;
   dropdownSettings: any = {};
   tableForm!: FormGroup;
+  notification_message!:any;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
 
   constructor(private router: Router, private followService: FollowService, 
     private fb: FormBuilder, private _snackBar: MatSnackBar, private sharedService:SharedService) {
@@ -51,7 +51,9 @@ export class FollowComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true,
-      classes: "myclass custom-class"
+      classes: "myclass custom-class",
+      autoPosition:false,
+      position:"bottom"
     };
   }
 
@@ -67,6 +69,10 @@ export class FollowComponent implements OnInit {
       QuestionsAndAnswers: this.fb.array([]),
     });
 
+    this.tableForm.valueChanges.subscribe((value: any) => {
+      //const filter = { ...value, name: value.fechaEmision.trim().toLowerCase() } as string;
+      //this.dataSource.filter = filter;
+    });
      this.followService.getFollowClientAll()
       .pipe(first())
       .subscribe({
@@ -75,9 +81,10 @@ export class FollowComponent implements OnInit {
           this.registers = data;
 
           this.dataSource = new MatTableDataSource(this.registers);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.create(this.registers)
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+
+         this.create(this.registers)
         },
         error: error => {
           this.error = error;
@@ -99,7 +106,8 @@ export class FollowComponent implements OnInit {
   save() {   
     const follow_inside: Array<FollowInsideModel> = this.registers.map((data: any, index:number) => {      
       const follow = this.tableForm.value.QuestionsAndAnswers[index].observations;
-      const atention = this.tableForm.value.QuestionsAndAnswers[index].observations;
+      const atention = this.tableForm.value.QuestionsAndAnswers[index].atention;
+      const resolutor = this.tableForm.value.QuestionsAndAnswers[index].resolutor;
       return {
         idUser: data.profile.idUser,
         nombre: data.profile.nombre,
@@ -111,9 +119,11 @@ export class FollowComponent implements OnInit {
         dateContract: data.company.fecha_contrato,
         contractFinalClient: data.company.contacto_cliente_final,
         follow: follow,
-        atention: atention
+        atention: atention,
+        resolutor: resolutor
       }
     });
+    this.notification_message=follow_inside;
     const init=this.tableForm.get('init_date')?.value;
     const finish=this.tableForm.get('finish_date')?.value;
     const randomCode = this.generateRandomCode();
@@ -124,10 +134,11 @@ export class FollowComponent implements OnInit {
       final_date: finish
     }
     this.data=data_toSave;
+    this.notifications();
     this.followService.followSave(data_toSave)
       .pipe(first())
       .subscribe({
-        next: (data) => {
+        next: (data) => {          
           this.openSnackBar(
             'Su registro se guardo exitosamente!',
             'OK'
@@ -138,7 +149,15 @@ export class FollowComponent implements OnInit {
         }
       });
   }
-
+  notifications(){    
+    const not = this.notification_message.map((data:any) => {
+      return {
+        message: data.follow,
+        destination: data.resolutor
+      };
+    }).filter((item:any) => item.message !== null && item.destination !== null);
+    this.sharedService.setNotification=not;
+  }
   generateRandomCode(): string {
     const prefix = 'fll-';
     const numbers = Math.floor(Math.random() * 90000) + 10000; // Genera un número aleatorio de 5 dígitos

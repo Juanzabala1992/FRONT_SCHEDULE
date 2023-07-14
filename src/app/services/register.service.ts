@@ -18,6 +18,15 @@ export class RegisterService {
       }));
   }
 
+  getUserByEmail(id:string) {    
+    const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
+    return this.http.get(`${environment.apiUrl}/profile/email/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+      .pipe(map((data: any) => {            
+        return data;
+      }));
+  }
+
+
   getAllUsers() {    
     const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
     return this.http.get(`${environment.apiUrl}/profile/all`, { headers: { Authorization: `Bearer ${token}` } })

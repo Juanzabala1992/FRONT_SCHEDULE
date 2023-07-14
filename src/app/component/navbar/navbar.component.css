@@ -39,3 +39,15 @@
     height: 42px;
     width: 36px;
 }
+.number{
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: red;
+    color: white;
+    z-index: 2;
+    position: relative;
+    top: -10px;
+    left: 20px;
+    text-align: center;
+}

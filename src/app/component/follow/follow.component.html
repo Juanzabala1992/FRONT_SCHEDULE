@@ -29,9 +29,9 @@
                 </div>
             </div>
             <div class="card card_universal">
-                <div class="card-body p-1" *ngIf="registers">                    
-                    <div class="table">
-                        <table mat-table [dataSource]="dataSource"  id="registersCustomer" matSort>
+                <div class="card-body p-1">                    
+                    <div class="table" *ngIf="registers">
+                        <table mat-table [dataSource]="dataSource" id="registersCustomer" matSort>
                             <ng-container formArrayName="QuestionsAndAnswers">
                                 <ng-container matColumnDef="recurso">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Recurso </th>
@@ -127,7 +127,8 @@
                                         <mat-form-field appearance="outline">                                        
                                             <select matNativeControl formControlName="resolutor">
                                               <option selected></option>
-                                              <option value="guillermo@pruebas.com">Guillermo</option>       
+                                              <option value="guillermo@pruebas.com">Guillermo</option>
+                                              <option value="jose@pruebas.com">Jose</option>       
                                             </select>
                                           </mat-form-field>
                                     </td>
@@ -145,7 +146,9 @@
                             </tr>
                         </table>
                     </div>                  
-                    <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
+                    <div class="row">
+                        <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
+                    </div>
                 </div>
             </div> 
             <div class="row d-flex justify-content-center mt-3 mb-5">

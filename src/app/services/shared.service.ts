@@ -8,10 +8,12 @@ export class SharedService {
 
   private id:BehaviorSubject<any>;
   private user:BehaviorSubject<any>;
+  private notification:BehaviorSubject<any>;
 
   constructor() {
     this.id = new BehaviorSubject({}); 
     this.user = new BehaviorSubject({});
+    this.notification = new BehaviorSubject({});
   }
 
   set setId(data:string){
@@ -26,6 +28,13 @@ export class SharedService {
   }
   get getUser(){    
     return this.user.asObservable();    
+  }
+
+  set setNotification(data:any){
+    this.notification.next(data);    
+  }
+  get getNotification(){    
+    return this.notification.asObservable();    
   }
 
   weekendsDatesFilter = (d: Date | null): boolean => {

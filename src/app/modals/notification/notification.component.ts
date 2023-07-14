@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Stomp } from '@stomp/stompjs';
+import { first } from 'rxjs';
 import * as SockJS from 'sockjs-client';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { RegisterService } from 'src/app/services/register.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -11,94 +17,97 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent implements OnInit {
+
+  error='';
+  registers:any;
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  displayedColumns: string[] = [
+    'foto',
+    'nombre',
+    'content',
+    'origin',
+    'fecha',
+  ];
   
-  stompClient: any = null;
-  privateStompClient: any = null;
-  socket: any;
-  data_user: any;
-  user$: any;
-  messages:any;
+  constructor(private notificationsService:NotificationsService, 
+    private registerService:RegisterService
+    ){
 
-  loginForm = new FormGroup({
-    text: new FormControl('', { validators: [Validators.required] }),
-    message: new FormControl('', { validators: [Validators.required] }),
-    to: new FormControl('', { validators: [Validators.required] }),  
-    nickname: new FormControl('', { validators: [Validators.required] }),  
-  });
-
-  constructor(private sharedService: SharedService) {
-    this.user$ = this.sharedService.getUser;
   }
-
   ngOnInit(): void {
-    this.user$.subscribe((user: any) => {
-      this.dataLoad(user);
-    });
-    const userString=localStorage.getItem('user');          
+    const userString=localStorage.getItem('user'); 
     if(userString){
       const user = JSON.parse(userString);
-      this.socketComfig(user);      
+      this.notificationsService.getUser(user.user)
+      .pipe(first())
+      .subscribe({
+      next: (data:any) => { 
+        this.loadMessages(data);
+      },
+      error: (error:any) => {
+          this.error = error;            
+        }
+      });         
+    }    
+  }
+  loadMessages(messages: any) {  
+     
+    for(let i=0;i<messages.length;i++){
+      console.log("messages[i].origin--> ", messages[i].origin);
+      this.registerService.getUserByEmail(messages[i].origin).pipe(first())
+      .subscribe({
+        next: (data:any) => { 
+          this.getInfo(data, messages);
+        },
+        error: (error:any) => {
+            this.error = error;            
+          }
+        });
+    }    
+  }
+
+  getInfo(data:any, messages:any){
+    console.log(data, messages);
+
+    const relatedMessages = messages.map((message:any) => {
+      if (message.origin === data.email) {
+       let foto = this.base64ToArrayBuffer(data.foto);
+       
+        return {
+            id: message.id,
+            foto: foto,
+            nombre: data.nombre,
+            apellido: data.apellido,
+            messageId: message.message_id,
+            content: message.content,
+            destination: message.destination,
+            origin: message.origin,
+            state: message.state,
+            fecha: new Date()
+        };
+    } else {
+        return null;
     }
-
-    console.log("this.data_user--> ", this.data_user?.user);
-      
-  }  
-
-  socketComfig(user:any){
-
-    this.socket = new SockJS('http://localhost:8091/ws');
-    this.stompClient = Stomp.over(this.socket);  
-    this.stompClient.connect({}, (frame: any) => {
-      this.stompClient.subscribe('/common/messages', (result: any) => {
-        this.show(JSON.parse(result.body));
-      });
-    });
-    this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
-    this.privateStompClient = Stomp.over(this.socket);
-    this.privateStompClient.connect({}, (frame: any) => {
-      console.log(frame);
-      this.privateStompClient.subscribe('/user/specific', (result: any) => {
-        console.log(result.body);
-        this.show(JSON.parse(result.body));
-      });
-    });
-  }
-
-  dataLoad(data: any) {
-    this.data_user = data;
-  }
-
-  sendMessage() {
-    let text = this.loginForm.get('text')?.value;
-    let from = this.loginForm.get('nickname')?.value;
-    let idUser = this.data_user.id_user;
-
-    this.stompClient.send("/app/application", {}, JSON.stringify({
-      'content': text, 
-      'destination': 'all', 
-      'origin': from,
-      'idUser': idUser,
-      'state': false
-    }));
-  }
+  });
   
-  sendPrivateMessage() {
-    let text = this.loginForm.get('message')?.value;
-    let from = this.loginForm.get('nickname')?.value;
-    let to = this.loginForm.get('to')?.value;
-    let idUser = this.data_user.id_user;
+  console.log(relatedMessages);  
+  this.registers = new Array<any>();
+            this.registers = relatedMessages;
 
-    this.stompClient.send("/app/private", {}, JSON.stringify({
-      'content': text, 
-      'destination': to, 
-      'origin': from,
-      'idUser': idUser,
-      'state': false
-    }));
+            this.dataSource = new MatTableDataSource(this.registers);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
   }
-  
-  show(message: any) {
-    this.messages=message;
-    console.log("message--->", this.messages);
+
+  base64ToArrayBuffer(foto:any) { 
+    const base64String = foto.substring(foto.indexOf(',') + 1);
+    const binaryString = window.atob(base64String);
+    const bytes = new Uint8Array(
+      Array.from(binaryString, (char) => char.charCodeAt(0))
+    );
+    const blob = new Blob([bytes], { type: 'image/png' });
+    return URL.createObjectURL(blob);
   }
 }

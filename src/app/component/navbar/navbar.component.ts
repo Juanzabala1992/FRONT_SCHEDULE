@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Stomp } from '@stomp/stompjs';
 import { first } from 'rxjs';
 import * as SockJS from 'sockjs-client';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -22,12 +23,12 @@ export class NavbarComponent implements OnInit {
   imageData!:any;
   load:boolean=false;
   view=false;
-
+  notifications$:any;
   stompClient: any = null;
   privateStompClient: any = null;
   socket: any;
   user$: any;
-  messages:any;
+  messages:Number=0;
   user:any;
 
   loginForm = new FormGroup({
@@ -39,9 +40,10 @@ export class NavbarComponent implements OnInit {
 
   constructor(private registerService:RegisterService, 
     private sharedService:SharedService, private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router, private notificationsService:NotificationsService
     ) {
     this.id$=this.sharedService.getId;
+    this.notifications$=this.sharedService.getNotification;
    }
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class NavbarComponent implements OnInit {
           count++;
           if(userString){
             const user = JSON.parse(userString);
-            this.socketComfig(user, count);      
+            this.socketComfig(user, count);            
           }
       }
     }));
@@ -66,16 +68,19 @@ export class NavbarComponent implements OnInit {
       if(this.id_user[0]){
         this.loadData();
       }
-    });      
+    });  
+    
+    this.notifications$.subscribe((notification:any)=>{
+      this.sendPrivateMessage(notification);
+    });    
   }
   socketComfig(user:any, count:number){
     if(count<=1){
-      this.user=user.user;  
+      this.user=user;  
       this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
-      this.privateStompClient = Stomp.over(this.socket);
-  
+      this.privateStompClient = Stomp.over(this.socket);  
+      this.show(this.user);
       
-  
       this.privateStompClient.connect({}, (frame: any) => {        
         this.privateStompClient.subscribe('/user/specific', (result: any) => {          
           this.show(JSON.parse(result.body));
@@ -104,10 +109,13 @@ export class NavbarComponent implements OnInit {
     });    
   }  
   sendMessage() {
-    let text = this.loginForm.get('text')?.value;
-    let from = this.loginForm.get('nickname')?.value;    
-    let idUser = this.user;
 
+    let text = this.loginForm.get('text')?.value;
+    let from = this.loginForm.get('nickname')?.value;
+    let idUser = '';
+    if(this.user){
+      idUser = this.user.user;
+    }
     this.stompClient.send("/app/application", {}, JSON.stringify(
       {
       'content': text, 
@@ -119,19 +127,25 @@ export class NavbarComponent implements OnInit {
       ));
   }
   
-  sendPrivateMessage() {
-    let text = this.loginForm.get('message')?.value;
-    let from = this.loginForm.get('nickname')?.value;
-    let to = this.loginForm.get('to')?.value;
-    let idUser = this.user;
+  sendPrivateMessage(notification:any) {     
+    let from = '';
+    let idUser = '';
 
-    this.stompClient.send("/app/private", {}, JSON.stringify({
-      'content': text, 
-      'destination': to, 
-      'origin': from,
-      'idUser': idUser,
-      'state': false
-    }));
+    if(this.user){
+      from = this.user.user;
+      idUser = this.user.user;
+    }
+
+    for(let i=0; i<notification.length;i++){      
+      this.stompClient.send("/app/private", {}, JSON.stringify({
+        'content': notification[i].message, 
+        'destination': notification[i].destination, 
+        'origin': from,
+        'idUser': idUser,
+        'state': false
+      }));
+
+    }    
   }
 
   password(){
@@ -152,8 +166,27 @@ export class NavbarComponent implements OnInit {
   notifications(){
     this.router.navigate(['/notifications']);
   }
-
-  show(message: any) {
-    this.messages=message;    
+  loadMessages(data:any){
+    let count=0;
+    const data_messages= data.map((data:any)=>{      
+      if(!data.state){
+        count++;
+      }      
+      return count;
+    });
+    this.messages=count;
+    console.log("this.messages ", this.messages); 
   }
+  show(message: any) {    
+     this.notificationsService.getUser(message.user)
+      .pipe(first())
+      .subscribe({
+        next: (data:any) => { 
+          this.loadMessages(data);
+        },
+        error: (error:any) => {
+            this.error = error;            
+        }
+    });
+  }   
 }
