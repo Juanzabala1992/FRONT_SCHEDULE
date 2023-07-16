@@ -9,11 +9,13 @@ export class SharedService {
   private id:BehaviorSubject<any>;
   private user:BehaviorSubject<any>;
   private notification:BehaviorSubject<any>;
+  private notificationTo:BehaviorSubject<any>;
 
   constructor() {
     this.id = new BehaviorSubject({}); 
     this.user = new BehaviorSubject({});
     this.notification = new BehaviorSubject({});
+    this.notificationTo = new BehaviorSubject({});
   }
 
   set setId(data:string){
@@ -34,6 +36,13 @@ export class SharedService {
     this.notification.next(data);    
   }
   get getNotification(){    
+    return this.notification.asObservable();    
+  }
+
+  set setNotificationTo(data:any){
+    this.notification.next(data);    
+  }
+  get getNotificationTo(){   
     return this.notification.asObservable();    
   }
 

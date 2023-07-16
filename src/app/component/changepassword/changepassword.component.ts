@@ -45,8 +45,7 @@ export class ChangepasswordComponent implements OnInit {
     this.authenticationService.changePassword(pass)
     .pipe(first())
     .subscribe({
-        next: (data:any) => {
-          console.log("data-->", data);
+        next: (data:any) => {          
           this.openSnackBar(
             'Su registro se guardo exitosamente!',
             'OK'

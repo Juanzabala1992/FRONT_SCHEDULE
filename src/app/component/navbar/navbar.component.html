@@ -69,7 +69,7 @@
               <div class="notification_container">
                 <div class="icon_bell">
                   <img class="icon" src="../../../assets/icons/bell.svg" alt="" (click)="notifications()" >
-                  <div class="number">
+                  <div class="number" *ngIf="messages">
                     <span>{{messages}}</span>
                   </div>
                 </div>                

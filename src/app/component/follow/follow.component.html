@@ -71,7 +71,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha contrato</th>
                                     <td mat-cell *matCellDef="let row">
                                         
-                                        <p >{{row.company.fecha_contrato}}</p>
+                                        <p >{{row.company.fecha_contrato | date:'dd/mm/yyyy'}}</p>
                                     </td>
                                 </ng-container>
                         

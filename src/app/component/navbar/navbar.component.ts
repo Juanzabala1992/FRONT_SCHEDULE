@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Stomp } from '@stomp/stompjs';
-import { first } from 'rxjs';
+import { delay, first } from 'rxjs';
 import * as SockJS from 'sockjs-client';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { RegisterService } from 'src/app/services/register.service';
@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   privateStompClient: any = null;
   socket: any;
   user$: any;
-  messages:Number=0;
+  messages:number=0;
   user:any;
 
   loginForm = new FormGroup({
@@ -48,7 +48,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     let count=0;
-    this.router.events.subscribe((event=>{
+    this.router.events.subscribe((async event=>{
       if(this.router.url.includes('/login')){
           this.view=false;
       }
@@ -58,8 +58,8 @@ export class NavbarComponent implements OnInit {
           count++;
           if(userString){
             const user = JSON.parse(userString);
-            this.socketComfig(user, count);            
-          }
+            this.socketComfig(user, count);             
+        }
       }
     }));
 
@@ -74,27 +74,36 @@ export class NavbarComponent implements OnInit {
       this.sendPrivateMessage(notification);
     });    
   }
-  socketComfig(user:any, count:number){
+  socketComfig(user:any, count:number){    
     if(count<=1){
       this.user=user;  
       this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
       this.privateStompClient = Stomp.over(this.socket);  
       this.show(this.user);
+
+     
+ 
       
-      this.privateStompClient.connect({}, (frame: any) => {        
+      this.privateStompClient.connect({}, (frame: any) => { 
+        console.log(frame);       
         this.privateStompClient.subscribe('/user/specific', (result: any) => {          
-          this.show(JSON.parse(result.body));
+          this.newMessage(JSON.parse(result.body));
         });
       });
   
-      this.socket = new SockJS(`http://localhost:8091/ws?user==${user.user}`);
+      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
       this.stompClient = Stomp.over(this.socket);  
       this.stompClient.connect({}, (frame: any) => {        
+        console.log(frame);
         this.stompClient.subscribe('/common/messages', (result: any) => {
-          this.show(JSON.parse(result.body));
+          this.newMessage(JSON.parse(result.body));
         });
       });
     }  
+  }
+  newMessage(message:any){    
+    this.sharedService.setNotificationTo=[message];
+    this.messages=this.messages+1;
   }
   loadData(){    
     this.registerService.getUser(this.id_user)
@@ -174,10 +183,19 @@ export class NavbarComponent implements OnInit {
       }      
       return count;
     });
+    
     this.messages=count;
-    console.log("this.messages ", this.messages); 
   }
   show(message: any) {    
+    /*let user_result='' 
+    console.log("message -->", message);
+    if(message.user){
+      user_result=message.user;
+    }
+    else{
+      user_result=message.email;
+      this.sharedService.setNotificationTo=message;
+    }*/
      this.notificationsService.getUser(message.user)
       .pipe(first())
       .subscribe({

@@ -90,8 +90,6 @@ export class RegisterComponent implements OnInit {
       foto: this.base64,
     } 
 
-    console.log("Register -->", register);
-
     this.registerService.userRegister(register)
     .pipe(first())
       .subscribe({

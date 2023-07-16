@@ -350,8 +350,7 @@ export class HoursregisterComponent implements OnInit {
     if (selectedDate) {      
       const fridayDate = moment(selectedDate-15).endOf('isoWeek').day(5).toDate();      
       this.fg.get('final_date')?.setValue(fridayDate);
-      this.maxDateAct = moment(selectedDate-14).endOf('isoWeek').day(5).toDate();
-      console.log("this.maxDateAct--> ", this.maxDateAct);
+      this.maxDateAct = moment(selectedDate-14).endOf('isoWeek').day(5).toDate();      
       this.minDateAct = selectedDate;
     }
   }
@@ -360,7 +359,7 @@ export class HoursregisterComponent implements OnInit {
     const selectedDate = event.value; 
     const finish= moment(selectedDate).endOf('isoWeek').day(5).toDate() 
     const init = this.fg.get('initial_date')?.value;
-    console.log(finish, "init  ",init);
+    
     if(init<finish){
       this.fg.get('final_date')?.setValue(init);
       this.openSnackBar(

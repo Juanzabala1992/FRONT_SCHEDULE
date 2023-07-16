@@ -10,7 +10,7 @@ export class SocketinterceptorsService implements HttpInterceptor {
   constructor() { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('Paso por el interceptor');
+    
     return next.handle(req);
   }
 }

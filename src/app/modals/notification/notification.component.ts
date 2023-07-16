@@ -20,10 +20,12 @@ export class NotificationComponent implements OnInit {
 
   error='';
   registers:any;
+  notifications$:any
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = [
+    'state',
     'foto',
     'nombre',
     'content',
@@ -32,9 +34,10 @@ export class NotificationComponent implements OnInit {
   ];
   
   constructor(private notificationsService:NotificationsService, 
-    private registerService:RegisterService
+    private registerService:RegisterService,
+    private sharedService:SharedService
     ){
-
+      this.notifications$=this.sharedService.getNotificationTo;
   }
   ngOnInit(): void {
     const userString=localStorage.getItem('user'); 
@@ -44,22 +47,25 @@ export class NotificationComponent implements OnInit {
       .pipe(first())
       .subscribe({
       next: (data:any) => { 
-        this.loadMessages(data);
+        this.loadMessages(data, false);
       },
       error: (error:any) => {
           this.error = error;            
         }
       });         
-    }    
+    }   
+    this.notifications$.subscribe((data:any)=>{      
+      if(data.length){             
+       this.loadMessages(data, true);
+      }      
+    })
   }
-  loadMessages(messages: any) {  
-     
-    for(let i=0;i<messages.length;i++){
-      console.log("messages[i].origin--> ", messages[i].origin);
+  loadMessages(messages: any, isNew:boolean) {     
+    for(let i=0;i<messages.length;i++){      
       this.registerService.getUserByEmail(messages[i].origin).pipe(first())
       .subscribe({
-        next: (data:any) => { 
-          this.getInfo(data, messages);
+        next: (data:any) => {           
+          this.getInfo(data, messages, isNew);         
         },
         error: (error:any) => {
             this.error = error;            
@@ -68,9 +74,7 @@ export class NotificationComponent implements OnInit {
     }    
   }
 
-  getInfo(data:any, messages:any){
-    console.log(data, messages);
-
+  getInfo(data:any, messages:any, isNew:boolean){    
     const relatedMessages = messages.map((message:any) => {
       if (message.origin === data.email) {
        let foto = this.base64ToArrayBuffer(data.foto);
@@ -91,11 +95,13 @@ export class NotificationComponent implements OnInit {
         return null;
     }
   });
-  
-  console.log(relatedMessages);  
-  this.registers = new Array<any>();
-            this.registers = relatedMessages;
-
+    if(isNew){
+      
+      this.registers.push(relatedMessages[0]);
+    }else{
+      this.registers = new Array<any>();
+      this.registers = relatedMessages;
+    }
             this.dataSource = new MatTableDataSource(this.registers);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
