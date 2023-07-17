@@ -9,6 +9,7 @@ import { InvalidModel } from 'src/app/model/invalidModel';
 })
 export class InvalidregisterComponent {
   @Input() data:any;
+  @Input() where:string='';
   labels:any;
   traslate:any={
     activities:"Actividades", 
@@ -27,14 +28,35 @@ export class InvalidregisterComponent {
     act_final_dateExt:"Fecha final de alguna de las actividades de las extras", 
     act_initial_dateExt:"Fecha inicial de alguna de las actividades de las extras", 
   }
+  traslate_register:any={
+    cliente:"Cliente", 
+    cliente_final:"Cliente final",   
+    direccion:"Dirección", 
+    email:"Email", 
+    nombre:"Nombre", 
+    apellido:"Apellido", 
+    numero_de_documento:"Número de documento", 
+    tipo_de_documento:"Tipo de documento", 
+    cargo:"Cargo", 
+    pais:"País",
+    telefono:"Teléfono"
+  }
   constructor(
     public ngbModal: NgbModal
   ) { }
 
   ngOnInit(): void {
-    this.labels = this.data.map((item:any)=>{      
-      return this.traslate[item];
-    });
+    if(this.where=='hoursregister'){
+      this.labels = this.data.map((item:any)=>{      
+        return this.traslate[item];
+      });
+    }
+    if(this.where=='register'){
+      this.labels = this.data.map((item:any)=>{      
+        return this.traslate_register[item];
+      });
+    }
+  
     
     const uniqueArray = this.labels.filter((value: string, index: number, self: string | any[]) => {
       return self.indexOf(value) === index;

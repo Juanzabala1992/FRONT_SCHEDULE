@@ -8,7 +8,7 @@ export class ProfileModel {
     cargo: string | undefined;
     pais: string | undefined;
     cliente: string | undefined;
-    cliente_final: string | undefined;
+    cliente_final: string | undefined | null;
     direccion: string | undefined;
     telefono: string | undefined;
     foto: string| undefined;

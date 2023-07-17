@@ -43,6 +43,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationComponent } from './component/notification/notification.component';
 import { SocketinterceptorsService } from './interceptors/socketinterceptors.service';
 import { ResponseFollowComponent } from './modals/response-follow/response-follow.component';
+import { InputMaxLengthDirective } from '../app/directives/input-max-length.directive';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { ResponseFollowComponent } from './modals/response-follow/response-follo
     ChangepasswordComponent,
     InvalidregisterComponent,
     NotificationComponent,
-    ResponseFollowComponent
+    ResponseFollowComponent,
+    InputMaxLengthDirective
   ],
   imports: [
     BrowserModule,

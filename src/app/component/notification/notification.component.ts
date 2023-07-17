@@ -11,7 +11,7 @@ import { ResponseFollowComponent } from 'src/app/modals/response-follow/response
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { SocketService } from 'src/app/services/socket.service';
+
 
 @Component({
   selector: 'app-notification',

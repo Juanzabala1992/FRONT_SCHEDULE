@@ -264,6 +264,7 @@ export class HoursregisterComponent implements OnInit {
       if(controls.length !=0){
         let modal = this.ngbModal.open(InvalidregisterComponent,{ size: 'sm'});
         modal.componentInstance.data = controls;
+        modal.componentInstance.where = 'hoursregister';
       }else{
         const uuid = uuidv4();  
         const work_hours=this.fg.get('promos')?.value;
