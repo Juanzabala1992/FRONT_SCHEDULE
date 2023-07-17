@@ -44,7 +44,7 @@ import { NotificationComponent } from './component/notification/notification.com
 import { SocketinterceptorsService } from './interceptors/socketinterceptors.service';
 import { ResponseFollowComponent } from './modals/response-follow/response-follow.component';
 import { InputMaxLengthDirective } from '../app/directives/input-max-length.directive';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -88,6 +88,7 @@ import { InputMaxLengthDirective } from '../app/directives/input-max-length.dire
     MatMenuModule,
     NgbModule,
     HttpClientModule,
+    MatSlideToggleModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',

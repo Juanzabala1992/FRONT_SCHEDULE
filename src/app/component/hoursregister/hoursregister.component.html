@@ -197,7 +197,7 @@
                     <mat-form-field>
                       <input matInput [matDatepicker]="picker" [min]="minDate" [min]="minDateAct" 
                       [max]="maxDateAct" formControlName="act_initial_dateExt" 
-                      [matDatepickerFilter]="weekendsDatesFilter" required readonly>
+                      required readonly>
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -211,7 +211,7 @@
                     <mat-form-field>
                       <input matInput [matDatepicker]="picker" placeholder="Fecha final" [min]="minDateAct" 
                       [max]="maxDateAct" formControlName="act_final_dateExt" 
-                      [matDatepickerFilter]="weekendsDatesFilter" required readonly>
+                      required readonly>
                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -268,24 +268,35 @@
                   </div>
                 </div>                
               </div>
+              <div class="col-6" *ngIf="show_client">
+                <div class="row">
+                  <div class="col-3">
+                    <span class="subtitles text-center ">Cliente final:</span>
+                  </div>
+                  <div class="col-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Cliente final</mat-label>
+                      <select matNativeControl required formControlName="client_final">
+                        <option selected></option>
+                        <option value="{{clien}}" *ngFor="let clien of final_client">{{clien}}</option>       
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>                
+              </div>
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">
                     <span class="subtitles text-center ">Responsable:</span>
                   </div>
                   <div class="col-6">
-                    <mat-form-field class="example-full-width">
+                     <mat-form-field appearance="outline">
                       <mat-label>Responsable</mat-label>
-                      <input matInput placeholder="Cliente" formControlName="final_client" required>
-                    </mat-form-field>
-
-                    <!--<mat-form-field appearance="outline">
-                      <mat-label>Responsable</mat-label>
-                      <select matNativeControl required formControlName="final_client">
+                      <select matNativeControl required formControlName="client_final_name">
                         <option selected></option>
-                        <option value="{{clien}}" *ngFor="let clien of final_client">{{clien}}</option>       
+                        <option value="{{clien}}" *ngFor="let clien of final_client_final">{{clien}}</option>       
                       </select>
-                    </mat-form-field>-->
+                    </mat-form-field>
                   </div>
                 </div>                
               </div>

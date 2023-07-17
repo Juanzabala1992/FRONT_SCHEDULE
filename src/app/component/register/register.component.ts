@@ -23,7 +23,9 @@ export class RegisterComponent implements OnInit {
   photo!:string;
   clients:[]=[];
   total_data:any;
-  final_client:[]=[];
+  final_client:Array<any>=[];
+  final_client_final:Array<any>=[];
+  show_client=false;
   countries:Array<String>=["Colombia","Ecuador","España"];
   documentos:Array<String>=["C.C","P.A","C.D", "C.E", "DNI", "P.E"];
   private displayType: string = "d-none";
@@ -65,24 +67,52 @@ export class RegisterComponent implements OnInit {
             this.error = error;            
         }
     });
+
+    this.registerForm.get('cliente')?.valueChanges.subscribe(value=>{
+      this.registerForm.get('cliente_final')?.reset();
+      this.takeFinalClients(value);
+    });
   }
   takeClients(data:any){
     this.clients=data.map((client:any)=>{
       return client.client;
     });
-    this.total_data=data;
-    this.registerForm.get('cliente')?.valueChanges.subscribe(value=>{
-      this.takeFinalClients(value);
-    });
+    this.total_data=data;    
   }
   takeFinalClients(value:string){
-    this.final_client = this.total_data
-  .map((client_final: any) => {
-    if (client_final.client_final == value) {
-      return client_final.client_final;
-    }
-  })
-  .filter((client: any) => client !== undefined);
+    console.log(" this.total_data ", this.total_data)
+    const final_data = this.total_data.map((data:any) => {
+      const clientFinal = data.client_final;
+       const contactClient = data.contacto_cliente;      
+      
+      if(data.client==value){
+        if(clientFinal){
+          return {clientFinal:clientFinal}; 
+        }
+        else{
+          return contactClient;
+        }          
+      }      
+    }).filter((client: any) => client !== undefined);
+
+     if(final_data[0].clientFinal){
+      const value = final_data[0].clientFinal;
+      const final = this.total_data.map((data:any) => {
+        const contacto_cliente_final = data.contacto_cliente_final;               
+        
+        if(data.client_final==value){
+          return contacto_cliente_final;       
+        }      
+      }).filter((client: any) => client !== undefined);
+      this.final_client_final=final;
+      this.final_client=[final_data[0].clientFinal];
+      this.show_client=true;
+    }else{
+      this.final_client=final_data;
+      this.show_client=false;
+    }    
+    console.log("this.final_client_final ", this.final_client_final, 
+    "this.final_client ", this.final_client);
   }
   upload($event:any){
     const target = $event.target as HTMLInputElement;

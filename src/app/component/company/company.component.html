@@ -8,31 +8,99 @@
         <div class="mt-5">
             <form class="form" role="form" [formGroup]="companyForm">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
                         <mat-form-field class="example-full-width">
                             <mat-label>Cliente</mat-label>                            
                             <input matInput placeholder="Cliente" type="text" formControlName="client">
+                            <mat-error *ngIf="companyForm.get('client')?.hasError('minlength')">
+                                Mínimo 3 caracteres.
+                            </mat-error>
                         </mat-form-field>                        
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Nombre del responsable del cliente</mat-label>                            
+                            <input matInput placeholder="Contacto cliente" type="text" formControlName="contacto_cliente" required>
+                            <mat-error *ngIf="companyForm.get('contacto_cliente')?.hasError('minlength')">
+                                Mínimo 3 caracteres.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field class="email">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email">
+                            <mat-error *ngIf="companyForm.get('email')?.hasError('emailFormat')">
+                                El formato de correo no es válido.
+                            </mat-error>
+                        </mat-form-field>
+                    </div> 
+                    <div class="col-3">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Telefono</mat-label>
+                            <input matInput type="number" formControlName="telefono" [appInputMaxLength]="10">
+                            <mat-error *ngIf="companyForm.get('telefono')?.hasError('minlength')">
+                              Mínimo 6 caracteres.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <section class="example-section">
+                        <mat-slide-toggle
+                            class="example-margin"
+                            [color]="color"
+                            [checked]="checked"
+                            [disabled]="disabled" 
+                            formControlName="final_client_toggle"                           
+                            >
+                            ¿Existe un cliente final?
+                        </mat-slide-toggle>
+                      </section>
+                </div>
+                <div class="row mt-3 mb-3" *ngIf="companyForm.get('final_client_toggle')?.value">
+                    <div class="col-3">
                         <mat-form-field class="example-full-width">
                             <mat-label>Cliente final</mat-label>                            
                             <input matInput placeholder="Cliente final" type="text" formControlName="client_final">
+                            <mat-error *ngIf="companyForm.get('client_final')?.hasError('minlength')">
+                                Mínimo 3 caracteres.
+                            </mat-error>
                         </mat-form-field> 
-                    </div>
-                    <div class="col-4">
+                    </div>                    
+                    <div class="col-3">
                         <mat-form-field class="example-full-width">
-                            <mat-label>Contacto cliente</mat-label>                            
-                            <input matInput placeholder="Contacto cliente" type="text" formControlName="contacto_cliente">
+                            <mat-label>Nombre del responsable del cliente final</mat-label>                            
+                            <input matInput placeholder="Contacto cliente final" type="text" formControlName="contacto_cliente_final">
+                            <mat-error *ngIf="companyForm.get('contacto_cliente_final')?.hasError('minlength')">
+                                Mínimo 3 caracteres.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field class="email">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email_final">
+                            <mat-error *ngIf="companyForm.get('email_final')?.hasError('emailFormat')">
+                                El formato de correo no es válido.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Telefono</mat-label>
+                            <input matInput type="number" formControlName="telefono_final" [appInputMaxLength]="10">
+                            <mat-error *ngIf="companyForm.get('telefono_final')?.hasError('minlength')">
+                              Mínimo 6 caracteres.
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center">
-                    <div class="col-4">
-                        <span class="me-1 subtitles">Fecha contrato: </span> 
+                    <div class="col-4">                       
                         <mat-form-field class="date" appearance="fill">
                             <mat-label>Fecha contrato</mat-label>
-                            <input matInput [matDatepicker]="picker" id="date" formControlName="fecha_contrato">
+                            <input matInput [matDatepicker]="picker" id="date" formControlName="fecha_contrato" readonly>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker touchUi #picker></mat-datepicker>
                             <!--<mat-error *ngIf="this.collectionForm.get('date').hasError('required')">Este campo es obligatorio</mat-error>-->
@@ -40,10 +108,12 @@
                     </div>
                     <div class="col-4">
                         <mat-form-field class="example-full-width">
-                            <mat-label>Contacto cliente final</mat-label>                            
-                            <input matInput placeholder="Contacto cliente final" type="text" formControlName="contacto_cliente_final">
-                        </mat-form-field>
-                    </div>
+                            <mat-label>Observaciones</mat-label>
+                            <textarea matInput #obs maxlength="280" placeholder="Observaciones" 
+                            formControlName="observations"></textarea>
+                            <mat-hint align="end">{{obs.value.length}} / 280</mat-hint>
+                          </mat-form-field>
+                    </div>                    
                 </div>
             </form>
         </div>

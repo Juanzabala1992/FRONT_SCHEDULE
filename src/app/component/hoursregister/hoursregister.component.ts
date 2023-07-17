@@ -47,9 +47,12 @@ export class HoursregisterComponent implements OnInit {
   minDate!: Date;
   maxDate!: Date;
   clients:[]=[];
-  final_client:[]=[];
+  final_client:Array<any>=[];
   minDateAct!: Date;
   maxDateAct!: Date;
+  total_data:any;
+  final_client_final:Array<any>=[];
+  show_client=false;
 
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
   
@@ -72,8 +75,9 @@ export class HoursregisterComponent implements OnInit {
       final_date: new FormControl('', [Validators.required]),
       observations: new FormControl(''),
       client:new FormControl('', [Validators.required]),
-      final_client:new FormControl('', [Validators.required]),
-      total_horas:new FormControl('')
+      client_final:new FormControl('', [Validators.required]),
+      total_horas:new FormControl(''),
+      client_final_name:new FormControl('')
     });
 
     this.id$.subscribe((id:string)=>{
@@ -121,7 +125,7 @@ export class HoursregisterComponent implements OnInit {
       }else{
         this.total_horas=`${suma_horas}:${module}`;
       }
-           
+          
     })
 
     const today = new Date();
@@ -138,16 +142,61 @@ export class HoursregisterComponent implements OnInit {
             this.error = error;            
         }
     });
+
+    this.fg.get('client')?.valueChanges.subscribe(value=>{     
+      if(value){
+        this.takeFinalClients(value);        
+      }        
+    });
   }
 
   takeClients(data:any){
     this.clients=data.map((client:any)=>{
       return client.client;
     });
-    this.final_client=data.map((client:any)=>{
-      return client.client_final;    
-    });
+    this.total_data=data;
   }
+
+  takeFinalClients(value:string){    
+    const final_data = this.total_data.map((data:any) => {
+      const clientFinal = data.client_final;
+       const contactClient = data.contacto_cliente;      
+      
+      if(data.client==value){
+        if(clientFinal){
+          return {clientFinal:clientFinal}; 
+        }
+        else{
+          return contactClient;
+        }          
+      }      
+    }).filter((client: any) => client !== undefined);
+
+     if(final_data[0].clientFinal){
+      const value = final_data[0].clientFinal;
+      const final = this.total_data.map((data:any) => {
+        const contacto_cliente_final = data.contacto_cliente_final;               
+        
+        if(data.client_final==value){
+          return contacto_cliente_final;       
+        }      
+      }).filter((client: any) => client !== undefined);
+
+      this.fg.get('client_final')?.reset();
+      this.fg.get('client_final_name')?.reset();
+
+      this.final_client_final=final;
+      this.final_client=[final_data[0].clientFinal];
+      this.show_client=true;
+    }else{      
+      this.fg.get('client_final')?.reset();
+      this.fg.get('client_final_name')?.reset();
+
+      this.final_client_final=final_data;
+      this.show_client=false;
+    }    
+  }
+
   loadData(){
     this.registerService.getUser(this.id_user)
     .pipe(first())
@@ -318,7 +367,7 @@ export class HoursregisterComponent implements OnInit {
         fecha_fin:this.dateFormat(finish),         
         cliente:this.fg.get('client')?.value,
         total_horas: this.total_horas,
-        responsable_cliente:this.fg.get('final_client')?.value,
+        responsable_cliente:this.fg.get('client_final_name')?.value,
         observaciones: this.fg.get('observations')?.value
       }
      this.dashboardService.scheduleRegister(data)
@@ -345,6 +394,8 @@ export class HoursregisterComponent implements OnInit {
   history(){
     this.router.navigate(['/history']);
   }
+
+  
 
   onStartDateSelected(event: any): void {
     const selectedDate = event.value;

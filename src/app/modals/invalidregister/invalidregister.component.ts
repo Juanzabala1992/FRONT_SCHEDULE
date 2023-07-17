@@ -41,6 +41,11 @@ export class InvalidregisterComponent {
     pais:"País",
     telefono:"Teléfono"
   }
+  traslate_clients:any={
+    client:"Cliente", 
+    contacto_cliente:"Contacto cliente",   
+    fecha_contrato:"Fecha de contrato"
+  }
   constructor(
     public ngbModal: NgbModal
   ) { }
@@ -55,6 +60,11 @@ export class InvalidregisterComponent {
       this.labels = this.data.map((item:any)=>{      
         return this.traslate_register[item];
       });
+    }
+    if(this.where=='company'){
+        this.labels = this.data.map((item:any)=>{      
+          return this.traslate_clients[item];
+        });
     }
   
     

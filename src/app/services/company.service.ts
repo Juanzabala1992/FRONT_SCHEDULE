@@ -20,7 +20,12 @@ export class CompanyService {
         client_final:data.client_final,
         contacto_cliente:data.contacto_cliente,
         contacto_cliente_final:data.contacto_cliente_final,
-        fecha_contrato:data.fecha_contrato
+        fecha_contrato:data.fecha_contrato,
+        telefono:data.telefono,
+        telefono_final:data.telefono_final,
+        email:data.email,
+        email_final:data.email_final,
+        observations:data.observations
       },
       {
         headers: { Authorization: `Bearer ${token}` }

@@ -77,8 +77,8 @@ export class NavbarComponent implements OnInit {
   socketComfig(user:any, count:number){    
     if(count<=1){
       this.user=user;  
-      this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
-      //this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
+      //this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
+      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
       this.privateStompClient = Stomp.over(this.socket);  
       this.show(this.user);
 
@@ -89,8 +89,8 @@ export class NavbarComponent implements OnInit {
         });
       });
   
-      this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
-      //this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
+      //this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
+      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
       this.stompClient = Stomp.over(this.socket);  
       this.stompClient.connect({}, (frame: any) => {        
         console.log(frame);
