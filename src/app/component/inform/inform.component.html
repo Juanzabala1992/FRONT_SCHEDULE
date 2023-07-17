@@ -62,8 +62,8 @@
                                             <td>{{ actividad.id }}</td>
                                             <td>{{ actividad.data }}</td>
                                             <td>{{ actividad.hours }}</td>
-                                            <td>{{ actividad.initial_date }}</td>
-                                            <td>{{ actividad.final_date }}</td>
+                                            <td>{{ actividad.initial_date | date: 'dd/mm/yyyy'}}</td>
+                                            <td>{{ actividad.final_date | date: 'dd/mm/yyyy' }}</td>
                                           </tr>
                                         </tbody>
                                       </table>
@@ -98,7 +98,7 @@
                 
                         <!-- Row shown when there is no matching data. -->
                         <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No se encontraron llamadas</td>
+                            <td class="mat-cell" colspan="4">No se encontraron registros</td>
                         </tr>
                     </table>
                 </div>

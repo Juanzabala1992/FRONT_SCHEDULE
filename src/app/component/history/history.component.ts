@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import * as XLSX from 'xlsx';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -35,6 +36,11 @@ export class HistoryComponent implements OnInit {
     'totalhoras'
   ];
 
+  form = new FormGroup({
+    cliente: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    fecha_inicio: new FormControl('', { nonNullable: true, validators: [Validators.required] })    
+  });
+
   constructor(private dashboardService:DashboardService, private sharedService:SharedService){
     this.id$=sharedService.getId;
   }
@@ -57,12 +63,38 @@ export class HistoryComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           
-          
+            this.dataSource.filterPredicate = function (data: any, filterValue: any) {
+               const a = !filterValue.cliente.toLowerCase() || data.cliente?.toLowerCase().includes(filterValue.cliente);
+               
+               const fechaInicio = filterValue.fecha_inicio;
+                const fecha = new Date(fechaInicio);
+
+                const dia = fecha.getDate()+1;
+                const mes = fecha.getMonth() + 1; // Se suma 1 porque los meses en JavaScript son indexados desde 0
+                const anio = fecha.getFullYear();
+
+                const fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
+
+                console.log(fechaFormateada); // Salida: '24/07/2023'
+               const b = !fechaFormateada.toLowerCase() || data.fecha_inicio?.toLowerCase().includes(fechaFormateada);     
+              return a && b;
+            };
+
         },
         error: error => {
             this.error = error;            
         }
     });
+
+    this.form.valueChanges.subscribe((value: any) => {
+      
+      const filter = { ...value, name: value.cliente.trim()?.toLowerCase() } as string;      
+      this.dataSource.filter = filter;
+      console.log("filter ", filter);
+    });
+
+
+   
   }
   exportExcel(): void {
     const element = document.getElementById('registersCustomer');

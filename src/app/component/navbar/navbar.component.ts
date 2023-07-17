@@ -144,6 +144,7 @@ export class NavbarComponent implements OnInit {
 
     for(let i=0; i<notification.length;i++){      
       this.stompClient.send("/app/private", {}, JSON.stringify({
+        'messageId':notification[i].messageId,
         'content': notification[i].message, 
         'destination': notification[i].destination, 
         'origin': from,

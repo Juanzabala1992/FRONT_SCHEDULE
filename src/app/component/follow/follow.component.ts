@@ -25,7 +25,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 export class FollowComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   data: any;
-  displayedColumns: string[] = ['recurso', 'cliente', 'clientefinal', 'contactocliente', 'contactoclientefinal', 'fechacontrato', 'seguimiento', 'puntodeatencion', 'responsable'];
+  displayedColumns: string[] = ['nombre', 'client', 'clientefinal', 'contactocliente', 'contactoclientefinal', 'fechacontrato', 'seguimiento', 'puntodeatencion', 'responsable'];
   error: any;
   dataSourcesActivities = new MatTableDataSource<any>();
   dropdownList: any = [];
@@ -37,6 +37,7 @@ export class FollowComponent implements OnInit {
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(private router: Router, private followService: FollowService, 
     private fb: FormBuilder, private _snackBar: MatSnackBar, private sharedService:SharedService) {
@@ -64,6 +65,8 @@ export class FollowComponent implements OnInit {
   ngOnInit(): void {
 
     this.tableForm = this.fb.group({
+      nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      client: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
       init_date: new FormControl(),
       finish_date: new FormControl(),
       QuestionsAndAnswers: this.fb.array([]),
@@ -84,12 +87,27 @@ export class FollowComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
 
+            this.dataSource.filterPredicate = function (data: any, filterValue: any) {
+              const a = !filterValue.nombre.toLowerCase() || data.profile.nombre?.toLowerCase().includes(filterValue.nombre); 
+              console.log("filterValue.nombre ->", filterValue.nombre , " data.nombre ", data.nombre)             
+              const b = !filterValue.client.toLowerCase() || data.company.client?.toLowerCase().includes(filterValue.client);             
+             return a && b;
+           };
+
          this.create(this.registers)
         },
         error: error => {
           this.error = error;
         }
       });
+
+      this.tableForm.valueChanges.subscribe((value: any) => {
+      
+        const filter = { ...value, name: value.client.trim()?.toLowerCase() } as string;      
+        this.dataSource.filter = filter;
+        console.log("filter ", filter);
+      });
+  
   }
 
   create(item:any){
@@ -106,10 +124,12 @@ export class FollowComponent implements OnInit {
   save() {   
     const follow_inside: Array<FollowInsideModel> = this.registers.map((data: any, index:number) => {      
       const follow = this.tableForm.value.QuestionsAndAnswers[index].observations;
-      const atention = this.tableForm.value.QuestionsAndAnswers[index].atention;
+      const atention = this.tableForm.value.QuestionsAndAnswers[index].atention[0].itemName;
       const resolutor = this.tableForm.value.QuestionsAndAnswers[index].resolutor;
+      const ntc = this.generateRandomCodeMessage();      
       return {
         idUser: data.profile.idUser,
+        messageId:ntc,
         nombre: data.profile.nombre,
         apellido: data.profile.apellido,
         cargo: data.profile.cargo,
@@ -151,9 +171,11 @@ export class FollowComponent implements OnInit {
   }
   notifications(){   
       const not = this.notification_message.map((data:any) => {
+        console.log("data.messageId -->", data.messageId);
       return {
         message: data.follow,
         destination: data.resolutor,
+        messageId:data.messageId
       };
     }).filter((item:any) => item.message !== null && item.destination !== null);
     this.sharedService.setNotification=not;
@@ -163,6 +185,26 @@ export class FollowComponent implements OnInit {
     const numbers = Math.floor(Math.random() * 90000) + 10000; // Genera un número aleatorio de 5 dígitos
 
     return prefix + numbers.toString();
+  }
+
+  generateRandomCodeMessage(): string {
+    const prefix: string = 'ntc-';
+    const numbers: number = Math.floor(Math.random() * 90000) + 10000; // Genera un número aleatorio de 5 dígitos
+    const letters: string = this.generateRandomLetters(2); // Genera dos letras aleatorias
+  
+    return prefix + numbers.toString() + letters;
+  }
+  
+  generateRandomLetters(count: number): string {
+    const letters: string[] = [];
+  
+    for (let i = 0; i < count; i++) {
+      const letterCode: number = Math.floor(Math.random() * 26) + 97; // Genera un número aleatorio entre 97 y 122 (códigos ASCII para letras minúsculas)
+      const letter: string = String.fromCharCode(letterCode);
+      letters.push(letter);
+    }
+  
+    return letters.join('');
   }
 
   exportExcel(): void {
