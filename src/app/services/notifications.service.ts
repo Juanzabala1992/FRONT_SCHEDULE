@@ -17,4 +17,24 @@ export class NotificationsService {
         return data;
       }));
   }
+  putNotification(data:any){
+    const token = localStorage.getItem('currentUser')?.replace(/"/g, '');
+    return this.http.put(`${environment.apiUrl}/notifications/update`,
+      {        
+        content:data.content,
+        destination:data.destination,
+        email:data.email,
+        idUser:data.idUser,
+        messageId:data.messageId,
+        origin:data.origin,
+        state: true       
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .pipe(map(res => {
+        
+        return res;
+      }));
+  }
 }

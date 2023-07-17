@@ -1,0 +1,25 @@
+.img_profile_container{
+    width: 103px;
+    height: 103px;
+    border: 2px solid black;
+    border-radius: 100%;
+}
+.img_profile{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}
+.notification_indicator{
+    width: 10px;
+    height: 10px;
+    background-color: #E01507;
+    border-radius: 100%;
+}
+.row_data{
+     background-color: #F2E5F8;
+}
+.row_data:hover{
+    
+    background-color: #F5F7FA;
+    cursor: pointer;
+}

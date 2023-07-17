@@ -81,9 +81,6 @@ export class NavbarComponent implements OnInit {
       this.privateStompClient = Stomp.over(this.socket);  
       this.show(this.user);
 
-     
- 
-      
       this.privateStompClient.connect({}, (frame: any) => { 
         console.log(frame);       
         this.privateStompClient.subscribe('/user/specific', (result: any) => {          
@@ -177,7 +174,7 @@ export class NavbarComponent implements OnInit {
   }
   loadMessages(data:any){
     let count=0;
-    const data_messages= data.map((data:any)=>{      
+    data.map((data:any)=>{      
       if(!data.state){
         count++;
       }      

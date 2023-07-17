@@ -40,8 +40,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import { ChangepasswordComponent } from './component/changepassword/changepassword.component';
 import { InvalidregisterComponent } from './modals/invalidregister/invalidregister.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NotificationComponent } from './modals/notification/notification.component';
+import { NotificationComponent } from './component/notification/notification.component';
 import { SocketinterceptorsService } from './interceptors/socketinterceptors.service';
+import { ResponseFollowComponent } from './modals/response-follow/response-follow.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { SocketinterceptorsService } from './interceptors/socketinterceptors.ser
     CompanyComponent,
     ChangepasswordComponent,
     InvalidregisterComponent,
-    NotificationComponent
+    NotificationComponent,
+    ResponseFollowComponent
   ],
   imports: [
     BrowserModule,

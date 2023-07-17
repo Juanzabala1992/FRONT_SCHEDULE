@@ -126,12 +126,12 @@ export class FollowComponent implements OnInit {
     this.notification_message=follow_inside;
     const init=this.tableForm.get('init_date')?.value;
     const finish=this.tableForm.get('finish_date')?.value;
-    const randomCode = this.generateRandomCode();
+    const randomCode = this.generateRandomCode();    
     const data_toSave: FollowModel = {
       followId: randomCode,
       follow: follow_inside,
       init_date: init,
-      final_date: finish
+      final_date: finish      
     }
     this.data=data_toSave;
     this.notifications();
@@ -149,11 +149,11 @@ export class FollowComponent implements OnInit {
         }
       });
   }
-  notifications(){    
-    const not = this.notification_message.map((data:any) => {
+  notifications(){   
+      const not = this.notification_message.map((data:any) => {
       return {
         message: data.follow,
-        destination: data.resolutor
+        destination: data.resolutor,
       };
     }).filter((item:any) => item.message !== null && item.destination !== null);
     this.sharedService.setNotification=not;
@@ -164,7 +164,6 @@ export class FollowComponent implements OnInit {
 
     return prefix + numbers.toString();
   }
-
 
   exportExcel(): void {
     const element = document.getElementById('registersCustomer');
