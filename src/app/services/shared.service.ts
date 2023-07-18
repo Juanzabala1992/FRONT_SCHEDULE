@@ -10,12 +10,14 @@ export class SharedService {
   private user:BehaviorSubject<any>;
   private notification:BehaviorSubject<any>;
   private notificationTo:BehaviorSubject<any>;
+  private disconnect:BehaviorSubject<any>;
 
   constructor() {
     this.id = new BehaviorSubject({}); 
     this.user = new BehaviorSubject({});
     this.notification = new BehaviorSubject({});
     this.notificationTo = new BehaviorSubject({});
+    this.disconnect = new BehaviorSubject({});
   }
 
   set setId(data:string){
@@ -44,6 +46,12 @@ export class SharedService {
   }
   get getNotificationTo(){   
     return this.notification.asObservable();    
+  }
+  get getDisconnect(){   
+    return this.notification.asObservable();    
+  }
+  set setDisconnect(data:any){
+    this.notification.next(data);    
   }
 
   weekendsDatesFilter = (d: Date | null): boolean => {

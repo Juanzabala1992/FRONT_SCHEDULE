@@ -1,41 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" *ngIf="view">
     <div class="container-fluid">
-
-      <!--<h2>WebSocket Test</h2>-->
-  
-      <!--<div>
-        <form action="" [formGroup]="loginForm">
-          <div>
-            <input type="text" id="nickname" placeholder="nickname" formControlName="nickname"/>
-          </div>
-          <br>
-          <div>
-            <button id="sendMessage" (click)="sendMessage()">Send common message</button>
-            <input type="text" id="text" placeholder="message" formControlName="text"/>
-          </div>
-          <br/>
-          <div>
-            <button id="sendPrivateMessage" (click)="sendPrivateMessage();">Send private message</button>
-            <input type="text" id="privateText" placeholder="message" formControlName="message"/>
-            <input type="text" id="to" placeholder="to" formControlName="to"/>
-          </div>
-          <br/>
-          
-          <br/>
-          <br/>
-          <h2>Messages:</h2>
-          <div>
-            <div *ngIf="messages">
-            <div class="ml-5">
-              {{messages.origin}} : {{messages.content}}
-            </div>  
-            </div>
-          </div>
-        </form>  
-      </div>-->
-
-
-        <div class="image_container">
+      <div class="image_container">
             <img class="logo_image" src="../../../assets/logo/Logo_factech_new.PNG" alt="">
         </div>        
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +25,7 @@
             </div>                       
           </li>
           <li class="nav-item">
-            <div class="logo">
+            <div class="logo" (click)="logOut()">
                 <img class="icon" src="../../../assets/icons/log_out.svg" alt="">
             </div>            
           </li>

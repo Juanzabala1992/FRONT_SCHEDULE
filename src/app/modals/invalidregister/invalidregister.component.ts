@@ -66,6 +66,9 @@ export class InvalidregisterComponent {
           return this.traslate_clients[item];
         });
     }
+    if(this.where=='password'){
+      this.labels = ['Revise los mensajes de error, la contraseña no cumple con los parámetros o no coincide']
+  }
   
     
     const uniqueArray = this.labels.filter((value: string, index: number, self: string | any[]) => {

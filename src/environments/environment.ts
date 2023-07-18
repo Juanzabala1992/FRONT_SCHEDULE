@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8091/api/v1/auth',
-  //apiUrl:apiUrl: 'http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com/api/v1/auth',
+  //apiUrl: 'http://localhost:8091/api/v1/auth',
+    apiUrl: 'http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com/api/v1/auth',
 };
 
 /*

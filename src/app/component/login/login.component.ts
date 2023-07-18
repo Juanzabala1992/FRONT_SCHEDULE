@@ -7,6 +7,7 @@ import { LoginModel } from '../../model/LoginModel';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { SharedService } from 'src/app/services/shared.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,9 +29,9 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    
+    localStorage.clear();    
   }
-  login(){
+  login(){   
     const login :LoginModel = {
       email: this.loginForm.get('username')?.value,
       password:this.loginForm.get('password')?.value

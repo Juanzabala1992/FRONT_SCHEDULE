@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { first } from 'rxjs';
+import { InvalidregisterComponent } from 'src/app/modals/invalidregister/invalidregister.component';
 import { ChangePasswordModel } from 'src/app/model/changePassword';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -30,7 +32,8 @@ export class ChangepasswordComponent implements OnInit {
   });
   
   constructor(private authenticationService:AuthenticationService,
-    private _snackBar: MatSnackBar, private sharedService:SharedService
+    private _snackBar: MatSnackBar, private sharedService:SharedService,
+    private ngbModal: NgbModal
     ){
       this.user$=sharedService.getUser;
   }
@@ -45,25 +48,34 @@ export class ChangepasswordComponent implements OnInit {
     this.user=data;
   }
   save(){
- 
-    const pass :ChangePasswordModel = {
-      email:this.user.user,
-      newPassword: this.changePassword.get('newPassword')?.value,
-    }
-    this.authenticationService.changePassword(pass)
-    .pipe(first())
-    .subscribe({
-        next: (data:any) => {          
-          this.openSnackBar(
-            'Su registro se guardo exitosamente!',
-            'OK'
-          );            
-        },
-        error: (error:any) => {
-            this.error = error;
-            //this.loading = false;
-        }
-    });
+    const value = this.changePassword.valid;
+    if(value){
+      const pass :ChangePasswordModel = {
+        email:this.user.user,
+        newPassword: this.changePassword.get('newPassword')?.value,
+      }
+      this.authenticationService.changePassword(pass)
+      .pipe(first())
+      .subscribe({
+          next: (data:any) => {          
+            this.openSnackBar(
+              'Su registro se guardo exitosamente!',
+              'OK'
+            );            
+          },
+          error: (error:any) => {
+              this.error = error.error.message;
+              this.openSnackBar(
+                this.error,
+                'OK'
+              ); 
+              //this.loading = false;
+          }
+      });
+    }else{
+      let modal = this.ngbModal.open(InvalidregisterComponent,{ size: 'xl'});      
+      modal.componentInstance.where = 'password';
+    }    
   }
   viewP(){
     this.changeType=!this.changeType;

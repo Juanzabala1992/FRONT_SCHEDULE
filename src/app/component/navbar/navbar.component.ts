@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     let count=0;
     this.router.events.subscribe((async event=>{
-      if(this.router.url.includes('/login')){
+      if(this.router.url.includes('/login') || this.router.url=='/' ){
           this.view=false;
       }
       else{
@@ -77,8 +77,8 @@ export class NavbarComponent implements OnInit {
   socketComfig(user:any, count:number){    
     if(count<=1){
       this.user=user;  
-      //this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
-      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
+      this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com/ws?user=${user.user}`);
+      //this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);      
       this.privateStompClient = Stomp.over(this.socket);  
       this.show(this.user);
 
@@ -89,8 +89,8 @@ export class NavbarComponent implements OnInit {
         });
       });
   
-      //this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com:5000/ws?user=${user.user}`);
-      this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
+      this.socket = new SockJS(`http://operation-management-env.eba-mtmfqwpu.eu-west-1.elasticbeanstalk.com/ws?user=${user.user}`);
+      //this.socket = new SockJS(`http://localhost:8091/ws?user=${user.user}`);
       this.stompClient = Stomp.over(this.socket);  
       this.stompClient.connect({}, (frame: any) => {        
         console.log(frame);
@@ -186,16 +186,7 @@ export class NavbarComponent implements OnInit {
     
     this.messages=count;
   }
-  show(message: any) {    
-    /*let user_result='' 
-    console.log("message -->", message);
-    if(message.user){
-      user_result=message.user;
-    }
-    else{
-      user_result=message.email;
-      this.sharedService.setNotificationTo=message;
-    }*/
+  show(message: any) {
      this.notificationsService.getUser(message.user)
       .pipe(first())
       .subscribe({
@@ -206,5 +197,12 @@ export class NavbarComponent implements OnInit {
             this.error = error;            
         }
     });
-  }   
+  }  
+  logOut(){
+    this.socket.disconnect;  
+    this.privateStompClient.disconnect();  
+    this.stompClient.disconnect();
+    this.router.navigate(['/']);    
+    window.location.reload()
+  } 
 }

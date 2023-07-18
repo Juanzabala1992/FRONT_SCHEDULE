@@ -11,6 +11,8 @@ import { InformAdminComponent } from "./component/inform-admin/inform-admin.comp
 import { CompanyComponent } from "./component/company/company.component";
 import { ChangepasswordComponent } from "./component/changepassword/changepassword.component";
 import { NotificationComponent } from "./component/notification/notification.component";
+import { RolGuard } from "./guards/rol.guard";
+import { ValidateGuard } from "./guards/validate.guard";
 
 const routes: Routes = [
     {
@@ -20,47 +22,57 @@ const routes: Routes = [
     },
     { 
       path: 'schedule', 
-      component: HoursregisterComponent
-    },
+      component: HoursregisterComponent,
+      canActivate:[ValidateGuard],
+     },
     { 
       path: 'register', 
-      component: RegisterComponent
+      component: RegisterComponent,
+      canActivate:[RolGuard, ValidateGuard]
     },
     { 
       path: 'history', 
-      component: HistoryComponent
+      component: HistoryComponent,
+      canActivate:[ValidateGuard]
     },
     {
       path:'console',
-      component:ConsoleComponent
+      component:ConsoleComponent,
+      canActivate:[ValidateGuard, RolGuard]
     },
     {
       path:'inform-admin',
-      component:InformAdminComponent
+      component:InformAdminComponent,
+      canActivate:[RolGuard, ValidateGuard]
     },
     {
       path:'inform/activities',
-      component:InformComponent
+      component:InformComponent,
+      canActivate:[RolGuard, ValidateGuard]
     },
     {
       path:'inform/follow',
-      component:FollowComponent
+      component:FollowComponent,
+      canActivate:[RolGuard, ValidateGuard]
     },
     {
       path:'company',
-      component:CompanyComponent
+      component:CompanyComponent,
+      canActivate:[RolGuard, ValidateGuard]
     },
     {
       path:'change-password',
-      component:ChangepasswordComponent
+      component:ChangepasswordComponent,
+      canActivate:[ValidateGuard]
     },
     {
       path:'notifications',
-      component:NotificationComponent
+      component:NotificationComponent,
+      canActivate:[ValidateGuard]
     },
     {
       path:'login',
-      component:LoginComponent
+      component:LoginComponent,
     }
   ];  
   

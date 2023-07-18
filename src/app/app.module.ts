@@ -45,6 +45,7 @@ import { SocketinterceptorsService } from './interceptors/socketinterceptors.ser
 import { ResponseFollowComponent } from './modals/response-follow/response-follow.component';
 import { InputMaxLengthDirective } from '../app/directives/input-max-length.directive';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { Location } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
       headerName: 'X-XSRF-TOKEN',
     }),
   ],
-  providers: [
+  providers: [Location,
     { provide: MAT_DATE_LOCALE, useValue: 'es-GB' },
     {provide: HTTP_INTERCEPTORS, 
     useClass:SocketinterceptorsService,
@@ -109,8 +110,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
-
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
   bootstrap: [AppComponent]
 })
