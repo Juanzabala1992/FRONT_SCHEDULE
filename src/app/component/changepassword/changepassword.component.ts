@@ -16,9 +16,17 @@ export class ChangepasswordComponent implements OnInit {
   error:string='';
   user$:any;
   user:any;
+  changeType:boolean=true;
+  iconEye:boolean=true;
+  changeTypeCp:boolean=true;
+  iconEyeCp:boolean=true;
+
   changePassword = new FormGroup({
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] })    
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).(?=.*[$@$!%*?&]).{8,16}$'),
+    Validators.minLength(7)] }),
+    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).(?=.*[$@$!%*?&]).{8,16}$'),
+    Validators.minLength(7)] })
+        
   });
   
   constructor(private authenticationService:AuthenticationService,
@@ -56,6 +64,14 @@ export class ChangepasswordComponent implements OnInit {
             //this.loading = false;
         }
     });
+  }
+  viewP(){
+    this.changeType=!this.changeType;
+    this.iconEye=!this.iconEye;
+  }
+  viewCp(){
+    this.changeTypeCp=!this.changeTypeCp;
+    this.iconEyeCp=!this.iconEyeCp;
   }
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
